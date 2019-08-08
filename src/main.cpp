@@ -26,10 +26,11 @@ public:
 	virtual void initFrame(void) {}
 	virtual void onKeyDown(SDL_Keycode code) {}
 	virtual void onMouseDown(int x, int y) {}
-	virtual void onMouseMove(int x, int y) {}
+	virtual bool onMouseMove(int x, int y) {}
 	virtual void update(void) = 0;
 	virtual void render(void) = 0;
 };
+
 
 class SceneManager {
 private:
@@ -104,6 +105,10 @@ public:
 		rect.x = x;
 		rect.y = y;
 		SDL_QueryTexture(texture, nullptr, nullptr, &rect.w, &rect.h);
+	}
+	void move(int dx, int dy) {
+		rect.x += dx;
+		rect.y += dy;
 	}
 	SDL_Texture* getTexture(void) {
 		return texture;
@@ -227,6 +232,37 @@ public:
 } resources;
 
 
+class Script {
+private:
+	std::string text, name;
+	Texture background, character;
+public:
+	Script(void) {}
+
+	Script(std::string filename) {
+		text = "これは脚本ですよーっと。\n頑張ってね！";
+		name = "Rin";
+		background = Texture(0, 0, resources.picture("background.jpg"));
+		character = Texture(500, 20, resources.picture("character.png"));
+	}
+
+	std::string getCharacterName(void) {
+		return name;
+	}
+
+	std::string getText(void) {
+		return text;
+	}
+
+	Texture getBackground(void) {
+		return background;
+	}
+
+	Texture getCharacter(void) {
+		return character;
+	}	
+};
+
 class Load: public Scene {
 private:
 public:
@@ -253,7 +289,7 @@ public:
 
 class Exit: public Scene {
 private:
-	int current = 1;
+	int current = 2;
 	Button yesBtn, noBtn;
 	Texture notice;
 public:
@@ -276,20 +312,19 @@ public:
 	void process(void) {
 		if (current == 0) {
 			running = false;
-		} else {
+		} else if (current == 1) {
 			scenes.pop();
 		}
+		current = 2;
 	}
 
 	void onKeyDown(SDL_Keycode code) {
-		// const Uint8 *currentKeyStates = SDL_GetKeyboardState(nullptr);
-		// int step = currentKeyStates[SDL_SCANCODE_LSHIFT] ? 3 : 1;
 		switch (code) {
-			case SDLK_LEFT:
-				(current += 1) %= 2;
+			case SDLK_LEFT: 
+				current = 0;
 				break;
 			case SDLK_RIGHT:
-				(current += 1) %= 2;
+				current = 1;
 				break;
 			case SDLK_RETURN:
 				process();
@@ -297,17 +332,21 @@ public:
 		}
 	}
 
-	void onMouseMove(int x, int y) {
+	bool onMouseMove(int x, int y) {
 		if (yesBtn.isInside(x, y)) {
 			current = 0;
 		} else if (noBtn.isInside(x, y)) {
 			current = 1;
+		} else {
+			return false;
 		}
+		return true;
 	}
 
 	void onMouseDown(int x, int y) {
-		onMouseMove(x, y);
-		process();
+		if (onMouseMove(x, y)) {
+			process();
+		}
 	}
 
 	void update(void) {
@@ -327,13 +366,52 @@ public:
 
 class Dialogue: public Scene {
 private:
+	Script script;
+	Texture background, character, text, name, delta;
+	int tick = 0;
 public:
-	void update(void) {
+	Dialogue(void) {
+		script = Script("begin.scr");
+		background = script.getBackground();
+		character = script.getCharacter();
+		text = Texture(WINDOW_WIDTH * 12 / 100 , WINDOW_HEIGHT * 72 / 100,
+			resources.text(script.getText(), resources.font("BIZ-UDMinchoM.ttc", 24))
+		);
+		name = Texture(WINDOW_WIDTH * 12 / 100, WINDOW_HEIGHT * 68 / 100,
+			resources.text(script.getCharacterName(), resources.font("Coda.ttf", 24))
+		);
+		delta = Texture(WINDOW_WIDTH * 85 / 100 , WINDOW_HEIGHT * 85 / 100,
+			resources.text("▼", resources.font("BIZ-UDMinchoM.ttc", 24))
+		);
+	}
 
+	void update(void) {
+		// Enter -> Next: Script.next
+		// Else: Animation
+		tick++;
+		if (tick < 10) {
+			delta.move(0, 1);
+		} else if (tick < 20) {
+			delta.move(0, -1);
+		} else {
+			tick = -1;
+		}
 	}
 
 	void render(void) {
-		
+		SDL_RenderCopy(renderer, background.getTexture(), nullptr, background.getRect());
+		SDL_RenderCopy(renderer, character.getTexture(), nullptr, character.getRect());
+		SDL_Rect rect = {WINDOW_WIDTH * 10 / 100, WINDOW_HEIGHT * 70 / 100, WINDOW_WIDTH * 80 / 100, WINDOW_HEIGHT * 20 / 100};
+		SDL_SetRenderDrawColor(renderer, 0, 128, 192, 0xEF);
+		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+		SDL_RenderFillRect(renderer, &rect);
+		SDL_Rect rect2 = {WINDOW_WIDTH * 11 / 100, WINDOW_HEIGHT * 67 / 100, WINDOW_WIDTH * 5 / 100, WINDOW_HEIGHT * 5 / 100};
+		SDL_SetRenderDrawColor(renderer, 255, 201, 14, 0xBF);
+		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+		SDL_RenderFillRect(renderer, &rect2);
+		SDL_RenderCopy(renderer, text.getTexture(), nullptr, text.getRect());
+		SDL_RenderCopy(renderer, name.getTexture(), nullptr, name.getRect());
+		SDL_RenderCopy(renderer, delta.getTexture(), nullptr, delta.getRect());
 	}
 };
 
@@ -392,19 +470,23 @@ public:
 		}
 	}
 
-	void onMouseMove(int x, int y) {
+	bool onMouseMove(int x, int y) {
 		if (startBtn.isInside(x, y)) {
 			current = 0;
 		} else if (continueBtn.isInside(x, y)) {
 			current = 1;
 		} else if (exitBtn.isInside(x, y)) {
 			current = 2;
+		} else {
+			return false;
 		}
+		return true;
 	}
 
 	void onMouseDown(int x, int y) {
-		onMouseMove(x, y);
-		process();
+		if (onMouseMove(x, y)) {
+			process();
+		}
 	}
 
 	void update(void) {
