@@ -4,3 +4,4 @@ src/main.o
 *.dmp
 bin/Nula-Lilio.exe
 .vscode/settings.json
+a.bat
