@@ -1,0 +1,1 @@
+C:\MingW\bin\gdb.exe .\bin\Nula-Lilio.exe

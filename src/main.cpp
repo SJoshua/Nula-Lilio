@@ -2,6 +2,7 @@
  * Au: SJoshua
  */
 
+#include <iostream>
 #include <SDL.h>
 #include "Engine.h"
 #include "Resource_Manager.h"

@@ -6,6 +6,7 @@
 #include "../Resource_Manager.h"
 #include "../Texture.h"
 #include "../Button.h"
+#include "../Config.h"
 #include "Dialogue.h"
 #include "Exit.h"
 #include "Load.h"
@@ -26,21 +27,21 @@ private:
 public:
 	Start(void) {
 		startBtn = Button(100, 200,
-			resources.text(" Game Start ", resources.font("Coda.ttf", 60)),
-			resources.text("<Game Start>", resources.font("Coda.ttf", 60))
+			resources.text(" Game Start ", resources.font(DEFAULT_FONT, 60)),
+			resources.text("<Game Start>", resources.font(DEFAULT_FONT, 60))
 		);
 		
 		continueBtn = Button(450, 250,
-			resources.text(" Continue ", resources.font("Coda.ttf", 60)),
-			resources.text("<Continue>", resources.font("Coda.ttf", 60))
+			resources.text(" Continue ", resources.font(DEFAULT_FONT, 60)),
+			resources.text("<Continue>", resources.font(DEFAULT_FONT, 60))
 		);
 		
 		exitBtn = Button(800, 300,
-			resources.text(" Exit ", resources.font("Coda.ttf", 60)),
-			resources.text("<Exit>", resources.font("Coda.ttf", 60))
+			resources.text(" Exit ", resources.font(DEFAULT_FONT, 60)),
+			resources.text("<Exit>", resources.font(DEFAULT_FONT, 60))
 		);
 		
-		text = Texture(560, 100, resources.text("Nula Lilio", resources.font("Deng.ttf", 100)));
+		text = Texture(560, 100, resources.text("Nula Lilio", resources.font(DEFAULT_FONT, 100)));
 	}
 
 	void process(void) {

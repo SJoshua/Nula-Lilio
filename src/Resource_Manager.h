@@ -43,7 +43,7 @@ public:
     ResourceManager(void) {}
 
 	TTF_Font* font(std::string filename, int size) {
-		std::string path = "resource/fonts/" + filename;
+		std::string path = "./resource/fonts/" + filename;
 		if (!fonts[filename].count(size)) {
 			auto font = loadFont(path, size);
 			if (font == nullptr) {
@@ -56,7 +56,7 @@ public:
 	}
 
 	SDL_Texture* picture(std::string filename) {
-		std::string path = "resource/pictures/" + filename;
+		std::string path = "./resource/pictures/" + filename;
 		if (!pictures.count(filename)) {
 			auto pic = loadPicture(path);
 			if (pic == nullptr) {
@@ -70,7 +70,13 @@ public:
 
 	SDL_Texture* text(std::string text, TTF_Font *font, SDL_Color color = {0, 0, 0}) {
 		auto *surface = TTF_RenderUTF8_Blended_Wrapped(font, text.c_str(), color, WINDOW_WIDTH);
+		if (surface == nullptr) {
+			std::cout << "[Failed] render text <" << text.c_str() << ">: " << TTF_GetError() << std::endl;
+		}
 		auto *texture = SDL_CreateTextureFromSurface(renderer, surface);
+		if (texture == nullptr) {
+			std::cout << "[Failed] create texture: " << SDL_GetError() << std::endl;
+		}
 		SDL_FreeSurface(surface);
 		return texture;
 	}

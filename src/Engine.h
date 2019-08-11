@@ -7,6 +7,7 @@
 #include <iostream>
 #include "Scene.h"
 #include "scenes/Start.h"
+#include "scenes/Dialogue.h"
 #include "Scene_Manager.h"
 #include "Resource_Manager.h"
 #include "Config.h"
@@ -69,10 +70,10 @@ public:
 
 	void run(void) {
 		running = true;
-		SDL_Event e;
 		while (running) {
 			SDL_RenderClear(renderer);
 			scenes.initFrame();
+			SDL_Event e;
 			while (SDL_PollEvent(&e)) {
 				scenes.handle(e);
 			}

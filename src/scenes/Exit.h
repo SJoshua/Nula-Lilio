@@ -23,13 +23,13 @@ private:
 public:
 	Exit(void) {
 		yesBtn = Button(WINDOW_WIDTH / 10 * 3, WINDOW_HEIGHT / 10 * 5,
-			resources.text(" Yes ", resources.font("Coda.ttf", 60)),
-			resources.text("[Yes]", resources.font("Coda.ttf", 60))
+			resources.text(" Yes ", resources.font(DEFAULT_FONT, 60)),
+			resources.text("[Yes]", resources.font(DEFAULT_FONT, 60))
 		);
 
 		noBtn = Button(WINDOW_WIDTH / 10 * 5, WINDOW_HEIGHT / 10 * 5,
-			resources.text(" No ", resources.font("Coda.ttf", 60)),
-			resources.text("[No]", resources.font("Coda.ttf", 60))
+			resources.text(" No ", resources.font(DEFAULT_FONT, 60)),
+			resources.text("[No]", resources.font(DEFAULT_FONT, 60))
 		);
 
 		notice = Texture(WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10 * 3,

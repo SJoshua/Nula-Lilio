@@ -2,6 +2,7 @@
 #define SCENE_MANAGER_H
 
 #include <deque>
+#include <SDL.h>
 
 extern bool running;
 
@@ -25,10 +26,8 @@ public:
 	}
 
 	void jump(Scene* scene) {
-		Scene *s = top();
 		pop();
 		push(scene);
-		delete s;		
 	}
 
 	void initFrame(void) {

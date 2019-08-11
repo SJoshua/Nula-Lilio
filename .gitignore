@@ -5,3 +5,4 @@ src/main.o
 bin/Nula-Lilio.exe
 .vscode/settings.json
 a.bat
+.vscode/launch.json
