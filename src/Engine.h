@@ -54,9 +54,13 @@ public:
 		// Get the window screen
 		screen = SDL_GetWindowSurface(window);
 
-		scenes.push(new Start);
+		start();
 
 		return true;
+	}
+
+	void start(void) {
+		scenes.push(new Start);
 	}
 
 	void close(void) {

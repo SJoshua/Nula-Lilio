@@ -46,7 +46,7 @@ public:
 
 	void process(void) {
 		if (current == 0) {
-			scenes.jump(new Dialogue);
+			scenes.push(new Dialogue);
 		} else if (current == 1) {
 			scenes.jump(new Load);
 		} else if (current == 2) {

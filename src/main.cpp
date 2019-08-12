@@ -10,9 +10,9 @@
 
 ResourceManager resources;
 SceneManager scenes;
+Engine game;
 
-int main(int argc, char *args[]) {
-	Engine game;
+int main(int argc, char *args[]) {	
 	game.init();
 	game.run();
 	game.close();

@@ -9,6 +9,7 @@
 #include "../Config.h"
 #include "../Script.h"
 #include "../Texture.h"
+#include "Start.h"
 
 extern SceneManager scenes;
 extern ResourceManager resources;
@@ -31,7 +32,10 @@ public:
 	}
 
 	void process(void) {
-		script.next();
+		if (!script.next()) {
+			scenes.pop();
+			return;
+		}
 		background = Texture(0, 0, resources.picture(script.getBackground()));
 		if (!script.getCharacter().empty()) {
 			showCharacter = true;

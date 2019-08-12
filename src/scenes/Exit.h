@@ -33,7 +33,7 @@ public:
 		);
 
 		notice = Texture(WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10 * 3,
-			resources.text("ゲームを終了します。\nよろしいですか？", resources.font("BIZ-UDMinchoM.ttc", 45))
+			resources.text("ゲームを終了します。\nよろしいですか？", resources.font(DEFAULT_FONT, 45))
 		);
 	}
 

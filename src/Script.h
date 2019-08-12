@@ -5,11 +5,12 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <regex>
 #include "Resource_Manager.h"
 #include "Texture.h"
 
 struct page {
-	std::string name, text, background, character;	
+	std::string name, text, background, character;
 };
 
 class Script {
@@ -21,7 +22,7 @@ public:
 	Script(std::string filename, int pos = 0): pos(pos) {
         std::fstream fs("./resource/scripts/" + filename, fs.in);
 		std::string tag, str, con, nextBackground, nextCharacter;
-		script.push_back({"<INFO>", filename, "", ""});
+		script.push_back({"{INFO}", filename, "", ""});
 		while (getline(fs, str)) { 
 			if (str.empty()) {
 				if (!con.empty()) {
@@ -88,8 +89,13 @@ public:
 		return script[pos].character;
 	}
 
-    void next(void) {
+    bool next(void) {
 		pos++;
+		if (pos >= script.size()) {
+			return false;
+		} else {
+			return true;
+		}
     }	
 };
 #endif
