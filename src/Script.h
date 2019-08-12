@@ -17,9 +17,17 @@ class Script {
 private:
     int pos;
 	std::vector <page> script;
+	std::string tag;
+
 public:
 	Script(void) {}
+
 	Script(std::string filename, int pos = 0): pos(pos) {
+		readScript(filename);
+	}
+
+	void readScript(std::string filename) {
+		tag = filename;
         std::fstream fs("./resource/scripts/" + filename, fs.in);
 		std::string tag, str, con, nextBackground, nextCharacter;
 		script.push_back({"{INFO}", filename, "", ""});
@@ -87,6 +95,14 @@ public:
 
 	std::string getCharacter(void) {
 		return script[pos].character;
+	}
+
+	std::string getTag(void) {
+		return tag;
+	}
+
+	void jump(int p) {
+		pos = p;
 	}
 
     bool next(void) {
