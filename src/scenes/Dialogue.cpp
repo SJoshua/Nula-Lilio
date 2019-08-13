@@ -7,7 +7,7 @@ extern SDL_Renderer *renderer;
 Dialogue::Dialogue(std::string filename, int pos) {
     script = Script(filename, pos);
     process();
-    delta = Texture(WINDOW_WIDTH * 85 / 100 , WINDOW_HEIGHT * 85 / 100,
+    delta = Texture(WINDOW_WIDTH * 85 / 100 , WINDOW_HEIGHT * 84 / 100,
         resources.text("▼", resources.font(DEFAULT_FONT, 24))
     );
 }

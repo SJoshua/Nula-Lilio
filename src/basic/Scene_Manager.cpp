@@ -1,4 +1,5 @@
 #include "basic/Scene_Manager.h"
+#include <iostream>
 
 SceneManager::SceneManager(void) {}
 
@@ -26,22 +27,22 @@ void SceneManager::initFrame(void) {
 }
 
 void SceneManager::handle(SDL_Event &e) {
-    for (auto s: list) {
-        if (e.type == SDL_QUIT) {
-            running = false;
-        } else if (e.type == SDL_KEYDOWN) {
-            top()->onKeyDown(e.key.keysym.sym);
-        } else if (e.type == SDL_MOUSEMOTION) {
-            int x, y;
-            SDL_GetMouseState(&x, &y);
-            top()->onMouseMove(x, y);
-        } else if (e.type == SDL_MOUSEBUTTONDOWN) {
-            int x, y;
-            SDL_GetMouseState(&x, &y);
-            top()->onMouseDown(x, y);
-        } else {
-            // To-do
-        }
+    if (e.type == SDL_QUIT) {
+        running = false;
+    } else if (e.type == SDL_KEYDOWN) {
+		if (!e.key.repeat) {
+			top()->onKeyDown(e.key.keysym.sym);
+		}
+    } else if (e.type == SDL_MOUSEMOTION) {
+        int x, y;
+        SDL_GetMouseState(&x, &y);
+        top()->onMouseMove(x, y);
+    } else if (e.type == SDL_MOUSEBUTTONDOWN) {
+        int x, y;
+        SDL_GetMouseState(&x, &y);
+        top()->onMouseDown(x, y);
+    } else {
+        // To-do
     }
 }
 

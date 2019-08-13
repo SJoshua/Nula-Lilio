@@ -25,5 +25,5 @@ SDL_Rect* Button::getRect(void) {
 }
 
 bool Button::isInside(int px, int py) {
-    return (rect.x <= px && px <= rect.x + rect.w && rect.y <= py && py <= rect.y + rect.h);
+    return (rect.x <= px && px < rect.x + rect.w && rect.y <= py && py < rect.y + rect.h);
 }
