@@ -20,7 +20,7 @@ private:
 	TTF_Font* loadFont(std::string path, int size);
 
 public:
-    ResourceManager(void);
+	ResourceManager(void);
 
 	TTF_Font* font(std::string filename, int size);
 

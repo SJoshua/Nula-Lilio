@@ -16,7 +16,7 @@
 
 class Engine {
 public:
-    Engine (void);
+	Engine (void);
 
 	bool init(void);
 

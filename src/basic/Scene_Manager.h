@@ -13,7 +13,7 @@ private:
 	std::deque <Scene*> list;
 
 public:
-    SceneManager(void);
+	SceneManager(void);
 
 	void push(Scene *scene);
 

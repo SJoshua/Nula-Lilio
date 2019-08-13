@@ -4,3 +4,6 @@ Debug
 Release
 bin/Nula-Lilio.exe
 *.dmp
+bin/Nula Lilio.pdb
+bin/Nula Lilio.exe
+bin/Nula Lilio.ilk

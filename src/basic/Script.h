@@ -15,7 +15,7 @@ struct page {
 
 class Script {
 private:
-    int pos = 0;
+	int pos = 0;
 	std::vector <page> script;
 	std::string tag;
 
@@ -38,6 +38,6 @@ public:
 
 	void jump(int p);
 
-    bool next(void);
+	bool next(void);
 };
 #endif
