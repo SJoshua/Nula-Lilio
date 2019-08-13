@@ -4,9 +4,9 @@
 
 #include <iostream>
 #include <SDL.h>
-#include "Engine.h"
-#include "Resource_Manager.h"
-#include "Scene_Manager.h"
+#include "basic/Engine.h"
+#include "basic/Resource_Manager.h"
+#include "basic/Scene_Manager.h"
 
 ResourceManager resources;
 SceneManager scenes;

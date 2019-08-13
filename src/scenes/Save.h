@@ -2,28 +2,21 @@
 #define SCENES_SAVE_H
 
 #include <SDL.h>
-#include "../Scene.h"
-#include "../Scene_Manager.h"
-#include "../Resource_Manager.h"
 
-extern SceneManager scenes;
-extern ResourceManager resources;
-extern SDL_Renderer *renderer;
+#include "basic/Scene.h"
+#include "basic/Scene_Manager.h"
+#include "basic/Resource_Manager.h"
 
 class Save: public Scene {
 private:
 
 public:
-	Save (void) {
-	}
+	Save (void);
 
-	void update(void) {
+	void update(void);
 
-	}
+	void render(void);
 
-	void render(void) {
-		
-	}
 };
 
 #endif

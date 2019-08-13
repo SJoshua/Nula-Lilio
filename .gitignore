@@ -1,8 +1,6 @@
-
-.vscode/c_cpp_properties.json
-src/main.o
-*.dmp
+.vs
+.vscode
+Debug
+Release
 bin/Nula-Lilio.exe
-.vscode/settings.json
-a.bat
-.vscode/launch.json
+*.dmp
