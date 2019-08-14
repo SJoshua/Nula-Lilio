@@ -73,6 +73,6 @@ void Engine::run(void) {
 		scenes.update();
 		scenes.render();
 		SDL_RenderPresent(renderer);
-		SDL_Delay(1000 / 60);
+		SDL_Delay(1000 / 60); // To-do: SDL Timer
 	}
 }
