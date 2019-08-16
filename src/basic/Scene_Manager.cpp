@@ -30,9 +30,7 @@ void SceneManager::handle(SDL_Event &e) {
 	if (e.type == SDL_QUIT) {
 		running = false;
 	} else if (e.type == SDL_KEYDOWN) {
-		if (!e.key.repeat) {
-			top()->onKeyDown(e.key.keysym.sym);
-		}
+		top()->onKeyDown(e.key.keysym.sym);
 	} else if (e.type == SDL_MOUSEMOTION) {
 		int x, y;
 		SDL_GetMouseState(&x, &y);

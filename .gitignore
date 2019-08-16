@@ -7,3 +7,6 @@ bin/Nula-Lilio.exe
 bin/Nula Lilio.pdb
 bin/Nula Lilio.exe
 bin/Nula Lilio.ilk
+Nula Lilio.vcxproj
+*.filters
+Nula Lilio.vcxproj.filters

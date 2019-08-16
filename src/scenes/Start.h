@@ -15,12 +15,13 @@
 
 class Start: public Scene {
 private:
-	int current = 3; 
+	int current = 4; 
 	// 0: Game Start
 	// 1: Continue
-	// 2: Exit
+	// 2: Config
+	// 3: Exit
 	Texture text;
-	Button startBtn, continueBtn, exitBtn;
+	Button startBtn, continueBtn, configBtn, exitBtn;
 
 public:
 	Start(void);

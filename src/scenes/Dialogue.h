@@ -13,6 +13,7 @@
 #include "ui/Texture.h"
 
 #include "scenes/Start.h"
+#include "scenes/Save.h"
 
 class Dialogue: public Scene {
 private:
@@ -20,13 +21,24 @@ private:
 	Texture background, character, text, name, delta;
 	bool showCharacter, showName;
 	int tick = 0;
+	int current = 2;
+	// 0: save
+	// 1: return
+	// 2: null
+	Button returnBtn, saveBtn;
 
 public:
 	Dialogue(std::string filename = "prologue.nls", int pos = 0);
 
 	void process(void);
 
+	void Button_process(void);
+
 	void onKeyDown(SDL_Keycode code);
+
+	bool onMouseMove(int x, int y);
+
+	void onMouseDown(int x, int y);
 
 	void update(void);
 

@@ -10,6 +10,14 @@ Dialogue::Dialogue(std::string filename, int pos) {
 	delta = Texture(WINDOW_WIDTH * 85 / 100 , WINDOW_HEIGHT * 84 / 100,
 		resources.text("▼", resources.font(DEFAULT_FONT, 24))
 	);
+	saveBtn = Button(WINDOW_WIDTH / 10 * 7, WINDOW_HEIGHT / 100 * 94,
+		resources.text(" Save ", resources.font(DEFAULT_FONT, 40)),
+		resources.text("<Save>", resources.font(DEFAULT_FONT, 40))
+	);
+	returnBtn = Button(WINDOW_WIDTH / 10 * 8, WINDOW_HEIGHT / 100 * 94,
+		resources.text(" Return ", resources.font(DEFAULT_FONT, 40)),
+		resources.text("<Return>", resources.font(DEFAULT_FONT, 40))
+	);
 }
 
 void Dialogue::process(void) {
@@ -40,8 +48,37 @@ void Dialogue::process(void) {
 void Dialogue::onKeyDown(SDL_Keycode code) {
 	switch (code) {
 		case SDLK_RETURN:
+		case SDLK_SPACE:
 			process();
 			break;
+	}
+}
+
+void Dialogue::Button_process(void) {
+	if (current == 0) {
+		scenes.push(new Save);
+	}
+	else if (current == 1) {
+		scenes.jump(new Start);
+	}
+	current = 2;
+}
+
+bool Dialogue::onMouseMove(int x, int y) {
+	if (saveBtn.isInside(x, y)) {
+		current = 0;
+	}else if (returnBtn.isInside(x, y)) {
+		current = 1;
+	} else {
+		current = 2;
+		return false;
+	}
+	return true;
+}
+
+void Dialogue::onMouseDown(int x, int y) {
+	if (onMouseMove(x, y)) {
+		Button_process();
 	}
 }
 
@@ -78,4 +115,8 @@ void Dialogue::render(void) {
 	}
 	SDL_RenderCopy(renderer, text.getTexture(), nullptr, text.getRect());
 	SDL_RenderCopy(renderer, delta.getTexture(), nullptr, delta.getRect());
+	// Button
+	SDL_RenderCopy(renderer, current == 0 ? saveBtn.getActive() : saveBtn.getNormal(), nullptr, saveBtn.getRect());
+	SDL_RenderCopy(renderer, current == 1 ? returnBtn.getActive() : returnBtn.getNormal(), nullptr, returnBtn.getRect());
+
 }
