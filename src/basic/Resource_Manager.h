@@ -1,5 +1,5 @@
-#ifndef RESOURCE_MANAGER_H
-#define RESOURCE_MANAGER_H
+#ifndef BASIC_RESOURCE_MANAGER_H
+#define BASIC_RESOURCE_MANAGER_H
 
 #include <iostream>
 #include <unordered_map>

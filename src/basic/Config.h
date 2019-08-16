@@ -1,5 +1,5 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef BASIC_CONFIG_H
+#define BASIC_CONFIG_H
 
 #include <string>
 

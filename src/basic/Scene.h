@@ -1,5 +1,5 @@
-#ifndef SCENE_H
-#define SCENE_H
+#ifndef BASIC_SCENE_H
+#define BASIC_SCENE_H
 
 #include <SDL.h>
 

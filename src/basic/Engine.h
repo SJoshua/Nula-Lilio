@@ -1,5 +1,5 @@
-#ifndef ENGINE_H
-#define ENGINE_H
+#ifndef BASIC_ENGINE_H
+#define BASIC_ENGINE_H
 
 #include <SDL.h>
 #include <SDL_Image.h>

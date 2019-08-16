@@ -1,5 +1,5 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#ifndef UI_TEXTURE_H
+#define UI_TEXTURE_H
 
 #include <SDL.h>
 

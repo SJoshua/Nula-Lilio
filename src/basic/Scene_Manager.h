@@ -1,5 +1,5 @@
-#ifndef SCENE_MANAGER_H
-#define SCENE_MANAGER_H
+#ifndef BASIC_SCENE_MANAGER_H
+#define BASIC_SCENE_MANAGER_H
 
 #include <deque>
 #include <SDL.h>

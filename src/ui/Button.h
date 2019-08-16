@@ -1,5 +1,5 @@
-#ifndef BUTTON_H
-#define BUTTON_H
+#ifndef UI_BUTTON_H
+#define UI_BUTTON_H
 
 #include <SDL.h>
 

@@ -1,5 +1,5 @@
-#ifndef SCRIPT_H
-#define SCRIPT_H
+#ifndef BASIC_SCRIPT_H
+#define BASIC_SCRIPT_H
 
 #include <iostream>
 #include <fstream>
