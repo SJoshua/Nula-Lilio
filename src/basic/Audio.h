@@ -23,6 +23,8 @@ public:
 
 	void StopMusic(void);
 
+	void StopMusic(int late);
+
 };
 
 #endif 

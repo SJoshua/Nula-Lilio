@@ -49,7 +49,7 @@ void Dialogue::onKeyDown(SDL_Keycode code) {
 	switch (code) {
 		case SDLK_RETURN:
 		case SDLK_SPACE:
-			process();
+			se.PlayChunk("test.wav"); process();
 			break;
 	}
 }

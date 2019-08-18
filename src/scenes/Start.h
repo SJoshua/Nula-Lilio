@@ -23,7 +23,7 @@ private:
 	// 3: Exit
 	Texture text;
 	Button startBtn, continueBtn, configBtn, exitBtn;
-	Audio bgm;
+	Audio bgm,se;
 
 public:
 	Start(void);

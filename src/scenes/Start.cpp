@@ -35,6 +35,7 @@ Start::Start(void) {
 
 void Start::process(void) {
 	if (current == 0) {
+		bgm.StopMusic(20);
 		scenes.jump(new Dialogue);
 	} else if (current == 1) {
 		scenes.push(new Load);
@@ -79,6 +80,7 @@ bool Start::onMouseMove(int x, int y) {
 
 void Start::onMouseDown(int x, int y) {
 	if (onMouseMove(x, y)) {
+		se.PlayChunk("test.wav");
 		process();
 	}
 }

@@ -26,6 +26,7 @@ private:
 	// 1: return
 	// 2: null
 	Button returnBtn, saveBtn;
+	Audio bgm,se;
 
 public:
 	Dialogue(std::string filename = "prologue.nls", int pos = 0);

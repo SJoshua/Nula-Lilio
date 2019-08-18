@@ -35,6 +35,20 @@ void Audio::StopMusic(void)
 {
 	if (Mix_PlayingMusic() == 1)
 	{
-		Mix_PauseMusic();
+		Mix_HaltMusic();
+	}
+}
+
+void Audio::StopMusic(int late)
+{
+	if (Mix_PlayingMusic() == 1)
+	{
+		for (int i = 128; i >= 0; i--)
+		{
+			Mix_VolumeMusic(i);
+			SDL_Delay(late);
+		}
+		Mix_HaltMusic();
+		Mix_VolumeMusic(128);
 	}
 }
