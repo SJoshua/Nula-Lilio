@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <SDL_Image.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include <iostream>
 
 #include "basic/Scene.h"

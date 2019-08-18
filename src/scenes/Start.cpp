@@ -5,6 +5,8 @@ extern ResourceManager resources;
 extern SDL_Renderer *renderer;
 
 Start::Start(void) {
+	bgm.PlayMusic("test.mp3");
+
 	startBtn = Button(400, 380,
 		resources.text(" Game Start ", resources.font(DEFAULT_FONT, 40)),
 		resources.text("<Game Start>", resources.font(DEFAULT_FONT, 40))

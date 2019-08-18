@@ -5,6 +5,7 @@
 #include "basic/Scene_Manager.h"
 #include "basic/Resource_Manager.h"
 #include "basic/Config.h"
+#include "basic/Audio.h"
 
 #include "ui/Texture.h"
 #include "ui/Button.h"
@@ -22,6 +23,7 @@ private:
 	// 3: Exit
 	Texture text;
 	Button startBtn, continueBtn, configBtn, exitBtn;
+	Audio bgm;
 
 public:
 	Start(void);

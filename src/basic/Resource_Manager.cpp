@@ -25,6 +25,22 @@ TTF_Font* ResourceManager::loadFont(std::string path, int size) {
 	return font;
 }
 
+Mix_Chunk* ResourceManager::loadChunk(std::string path) {
+	Mix_Chunk *chunk = Mix_LoadWAV(path.c_str());
+	if (chunk == nullptr) {
+		std::cout << Mix_GetError() << std::endl;
+	}
+	return chunk;
+}
+
+Mix_Music* ResourceManager::loadMusic(std::string path) {
+	Mix_Music *music = Mix_LoadMUS(path.c_str());
+	if (music == nullptr) {
+		std::cout << Mix_GetError() << std::endl;
+	}
+	return music;
+}
+
 ResourceManager::ResourceManager(void) {}
 
 TTF_Font* ResourceManager::font(std::string filename, int size) {
@@ -53,6 +69,33 @@ SDL_Texture* ResourceManager::picture(std::string filename) {
 	return pictures[filename];
 }
 
+Mix_Chunk* ResourceManager::chunk(std::string filename) {
+	std::string path = "./resource/chunks/" + filename;
+	if (!chunks.count(filename)) {
+		auto chu = loadChunk(path);
+		if (chu == nullptr) {
+			std::cout << "[Failed] load chunk: " << path << std::endl;
+		} else {
+			chunks[filename] = chu;
+		}
+	}
+	return chunks[filename];
+}
+
+Mix_Music* ResourceManager::music(std::string filename) {
+	std::string path = "./resource/musics/" + filename;
+	if (!musics.count(filename)) {
+		auto mus = loadMusic(path);
+		if (mus == nullptr) {
+			std::cout << "[Failed] load music: " << path << std::endl;
+		}
+		else {
+			musics[filename] = mus;
+		}
+	}
+	return musics[filename];
+}
+
 SDL_Texture* ResourceManager::text(std::string text, TTF_Font *font, SDL_Color color) {
 	auto *surface = TTF_RenderUTF8_Blended_Wrapped(font, text.c_str(), color, WINDOW_WIDTH);
 	if (surface == nullptr) {
@@ -70,8 +113,11 @@ void ResourceManager::free(void) {
 	for (auto e: pictures) {
 		SDL_DestroyTexture(e.second);
 	}
-	for (auto e: audios) {
-		// To-do
+	for (auto e: chunks) {
+		Mix_FreeChunk(e.second);
+	}
+	for (auto e : musics) {
+		Mix_FreeMusic(e.second);
 	}
 	for (auto e: fonts) {
 		for (auto s: e.second) {

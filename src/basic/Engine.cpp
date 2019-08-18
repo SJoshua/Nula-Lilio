@@ -29,6 +29,20 @@ bool Engine::init(void) {
 		std::cout << TTF_GetError() << std::endl;
 	}
 
+	// Initialize SDL_Mixer
+	flags = MIX_INIT_FLAC | MIX_INIT_MP3;
+	if (!(Mix_Init(flags) & flags)) {
+		std::cout << Mix_GetError() << std::endl;
+	}
+
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+		std::cout << SDL_GetError() << std::endl;
+	}
+
+	if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
+		std::cout << Mix_GetError() << std::endl;
+	}
+
 	// Create window
 	window = SDL_CreateWindow("Nula Lilio", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	if (window == nullptr) {
@@ -58,6 +72,8 @@ void Engine::close(void) {
 	SDL_DestroyWindow(window);
 	TTF_Quit();
 	IMG_Quit();
+	Mix_CloseAudio();
+	Mix_Quit();
 	SDL_Quit();
 }
 
