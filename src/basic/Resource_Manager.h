@@ -25,8 +25,6 @@ private:
 
 	Mix_Music* loadMusic(std::string path);
 
-	
-
 public:
 	ResourceManager(void);
 
@@ -39,6 +37,8 @@ public:
 	Mix_Music* music(std::string filename);
 
 	SDL_Texture* text(std::string text, TTF_Font *font, SDL_Color color = {0, 0, 0});
+
+	void init(void);
 
 	void free(void);
 

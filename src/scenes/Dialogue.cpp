@@ -15,8 +15,8 @@ Dialogue::Dialogue(std::string filename, int pos) {
 		resources.text("<Save>", resources.font(DEFAULT_FONT, 40))
 	);
 	returnBtn = Button(WINDOW_WIDTH / 10 * 8, WINDOW_HEIGHT / 100 * 94,
-		resources.text(" Return ", resources.font(DEFAULT_FONT, 40)),
-		resources.text("<Return>", resources.font(DEFAULT_FONT, 40))
+		resources.text(" Title ", resources.font(DEFAULT_FONT, 40)),
+		resources.text("<Title>", resources.font(DEFAULT_FONT, 40))
 	);
 }
 
@@ -28,7 +28,7 @@ void Dialogue::process(void) {
 	background = Texture(0, 0, resources.picture(script.getBackground()));
 	if (!script.getCharacter().empty()) {
 		showCharacter = true;
-		character = Texture(500, 0, resources.picture(script.getCharacter()));
+		character = Texture(165, -100, resources.picture(script.getCharacter()));
 	} else {
 		showCharacter = false;
 	}

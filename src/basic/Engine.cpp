@@ -35,10 +35,6 @@ bool Engine::init(void) {
 		std::cout << Mix_GetError() << std::endl;
 	}
 
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
-		std::cout << SDL_GetError() << std::endl;
-	}
-
 	if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
 		std::cout << Mix_GetError() << std::endl;
 	}
@@ -56,7 +52,11 @@ bool Engine::init(void) {
 
 	// Get the window screen
 	screen = SDL_GetWindowSurface(window);
+	
+	// Initialize Resource Manager
+	resources.init();
 
+	// Game Start!
 	start();
 
 	return true;

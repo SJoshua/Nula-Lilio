@@ -1,5 +1,6 @@
 /* Project Nula Lilio
- * Au: SJoshua
+ * Author: SJoshua & Lethur
+ * - For the summer 2019.
  */
 
 #include <iostream>

@@ -46,7 +46,7 @@ void Audio::StopMusic(int late)
 		for (int i = 128; i >= 0; i--)
 		{
 			Mix_VolumeMusic(i);
-			SDL_Delay(late);
+			//SDL_Delay(late);
 		}
 		Mix_HaltMusic();
 		Mix_VolumeMusic(128);

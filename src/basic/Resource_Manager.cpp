@@ -1,6 +1,26 @@
 #include "Resource_Manager.h"
 
-extern SDL_Renderer* renderer;
+extern SDL_Renderer *renderer;
+
+ResourceManager::ResourceManager(void) {}
+
+void ResourceManager::init(void) {
+	SDL_Texture* black = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
+	SDL_Texture* white = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	SDL_SetRenderTarget(renderer, black);
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+	SDL_RenderClear(renderer);
+
+	SDL_SetRenderTarget(renderer, white);
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderClear(renderer);
+
+	pictures["white"] = white;
+	pictures["black"] = black;
+
+	SDL_SetRenderTarget(renderer, nullptr);
+}
 
 SDL_Texture* ResourceManager::loadPicture(std::string path) {
 	SDL_Surface *surface = IMG_Load(path.c_str());
@@ -41,8 +61,6 @@ Mix_Music* ResourceManager::loadMusic(std::string path) {
 	return music;
 }
 
-ResourceManager::ResourceManager(void) {}
-
 TTF_Font* ResourceManager::font(std::string filename, int size) {
 	std::string path = "./resource/fonts/" + filename;
 	if (!fonts[filename].count(size)) {
@@ -56,7 +74,7 @@ TTF_Font* ResourceManager::font(std::string filename, int size) {
 	return fonts[filename][size];
 }
 
-SDL_Texture* ResourceManager::picture(std::string filename) {
+SDL_Texture* ResourceManager::picture(std::string filename) {	
 	std::string path = "./resource/pictures/" + filename;
 	if (!pictures.count(filename)) {
 		auto pic = loadPicture(path);

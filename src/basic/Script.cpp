@@ -26,14 +26,14 @@ void Script::readScript(std::string filename) {
 				continue;
 			} else if (str[0] == '@') { // Commands
 				if (str.substr(1, 3) == "bg[") {
-					for (int i = 5; i < str.length(); i++) {
+					for (unsigned int i = 5; i < str.length(); i++) {
 						if (str[i] == ']') {
 							nextBackground = str.substr(4, i - 4);
 						}
 					}
 				}
 				if (str.substr(1, 3) == "ch[") {
-					for (int i = 5; i < str.length(); i++) {
+					for (unsigned int i = 5; i < str.length(); i++) {
 						if (str[i] == ']') {
 							nextCharacter = str.substr(4, i - 4);
 						}
@@ -42,14 +42,14 @@ void Script::readScript(std::string filename) {
 			} else {
 				if (tag.empty()) {
 					if (str[0] == '[') {
-						for (int i = 0; i < str.length(); i++) {
+						for (unsigned int i = 0; i < str.length(); i++) {
 							if (str[i] == ']') {
 								tag = str.substr(1, i - 1);
 							}
 						}
 					}
 				}
-				for (int i = 0; i < str.length(); i++) {
+				for (unsigned int i = 0; i < str.length(); i++) {
 					if (str[i] == '\t') {
 						if (!con.empty()) {
 							con += "\n";

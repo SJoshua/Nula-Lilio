@@ -15,7 +15,7 @@ struct page {
 
 class Script {
 private:
-	int pos = 0;
+	unsigned int pos = 0;
 	std::vector <page> script;
 	std::string tag;
 

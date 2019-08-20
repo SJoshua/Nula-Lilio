@@ -78,6 +78,9 @@
     <ClCompile Include="src\scenes\Saving.cpp">
       <Filter>Source Files\scenes</Filter>
     </ClCompile>
+    <ClCompile Include="src\basic\Audio.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ui\Texture.h">
@@ -119,14 +122,17 @@
     <ClInclude Include="src\basic\Script.h">
       <Filter>Header Files\basic</Filter>
     </ClInclude>
-    <ClInclude Include="Savedata.h">
-      <Filter>Header Files\basic</Filter>
-    </ClInclude>
     <ClInclude Include="src\scenes\Loading.h">
       <Filter>Header Files\scenes</Filter>
     </ClInclude>
     <ClInclude Include="src\scenes\Saving.h">
       <Filter>Header Files\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\basic\Audio.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\basic\Savedata.h">
+      <Filter>Header Files\basic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

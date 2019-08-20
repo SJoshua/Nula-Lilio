@@ -13,7 +13,6 @@ Start::Start(void) {
 	);
 
 	auto rect = startBtn.getRect();
-	std::cout << rect->h << " " << rect->w << " " << rect->x << " " << rect->y << std::endl;
 
 	continueBtn = Button(400, 440,
 		resources.text(" Continue ", resources.font(DEFAULT_FONT, 40)),
