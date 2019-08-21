@@ -146,6 +146,9 @@
     <ClInclude Include="src\ui\Button.h" />
     <ClInclude Include="src\ui\Texture.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".clang-format" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -72,13 +72,13 @@
     <ClCompile Include="src\basic\Savedata.cpp">
       <Filter>Source Files\basic</Filter>
     </ClCompile>
-    <ClCompile Include="src\scenes\Loading.cpp">
-      <Filter>Source Files\scenes</Filter>
-    </ClCompile>
     <ClCompile Include="src\scenes\Saving.cpp">
       <Filter>Source Files\scenes</Filter>
     </ClCompile>
     <ClCompile Include="src\basic\Audio.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\Loading.cpp">
       <Filter>Source Files\basic</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,5 +134,8 @@
     <ClInclude Include="src\basic\Savedata.h">
       <Filter>Header Files\basic</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".clang-format" />
   </ItemGroup>
 </Project>
