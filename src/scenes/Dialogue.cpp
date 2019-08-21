@@ -6,21 +6,33 @@ extern SDL_Renderer *renderer;
 
 Dialogue::Dialogue(std::string filename, int pos) {
 	script = Script(filename, pos);
-	process();
+	processScript();
 	delta = Texture(WINDOW_WIDTH * 85 / 100 , WINDOW_HEIGHT * 84 / 100,
 		resources.text("▼", resources.font(DEFAULT_FONT, 24))
 	);
-	saveBtn = Button(WINDOW_WIDTH / 10 * 7, WINDOW_HEIGHT / 100 * 94,
-		resources.text(" Save ", resources.font(DEFAULT_FONT, 40)),
-		resources.text("<Save>", resources.font(DEFAULT_FONT, 40))
+	autoBtn = Button(WINDOW_WIDTH / 100 * 42, WINDOW_HEIGHT / 100 * 94,
+		resources.text(" Auto ", resources.font(DEFAULT_FONT, 40)),
+		resources.text("[Auto]", resources.font(DEFAULT_FONT, 40))
 	);
-	returnBtn = Button(WINDOW_WIDTH / 10 * 8, WINDOW_HEIGHT / 100 * 94,
+	skipBtn = Button(WINDOW_WIDTH / 100 * 51, WINDOW_HEIGHT / 100 * 94,
+		resources.text(" Skip ", resources.font(DEFAULT_FONT, 40)),
+		resources.text("[Skip]", resources.font(DEFAULT_FONT, 40))
+	);
+	saveBtn = Button(WINDOW_WIDTH / 100 * 60, WINDOW_HEIGHT / 100 * 94,
+		resources.text(" Save ", resources.font(DEFAULT_FONT, 40)),
+		resources.text("[Save]", resources.font(DEFAULT_FONT, 40))
+	);
+	loadBtn = Button(WINDOW_WIDTH / 100 * 69, WINDOW_HEIGHT / 100 * 94,
+		resources.text(" Load ", resources.font(DEFAULT_FONT, 40)),
+		resources.text("[Load]", resources.font(DEFAULT_FONT, 40))
+	);
+	titleBtn = Button(WINDOW_WIDTH / 100 * 78, WINDOW_HEIGHT / 100 * 94,
 		resources.text(" Title ", resources.font(DEFAULT_FONT, 40)),
-		resources.text("<Title>", resources.font(DEFAULT_FONT, 40))
+		resources.text("[Title]", resources.font(DEFAULT_FONT, 40))
 	);
 }
 
-void Dialogue::process(void) {
+void Dialogue::processScript(void) {
 	if (!script.next()) {
 		scenes.jump(new Start);
 		return;
@@ -28,7 +40,7 @@ void Dialogue::process(void) {
 	background = Texture(0, 0, resources.picture(script.getBackground()));
 	if (!script.getCharacter().empty()) {
 		showCharacter = true;
-		character = Texture(165, -100, resources.picture(script.getCharacter()));
+		character = Texture(265, -100, resources.picture(script.getCharacter()));
 	} else {
 		showCharacter = false;
 	}
@@ -49,47 +61,78 @@ void Dialogue::onKeyDown(SDL_Keycode code) {
 	switch (code) {
 		case SDLK_RETURN:
 		case SDLK_SPACE:
-			se.PlayChunk("test.wav"); process();
+			//se.PlayChunk("test.wav"); 
+			processScript();
 			break;
 	}
 }
 
-void Dialogue::Button_process(void) {
+void Dialogue::processButtons(void) {
 	if (current == 0) {
+		// switch auto mode
+		if (speed == 100) {
+			speed = 0;
+		} else {
+			speed = 100;
+		}
+	} else if (current == 1) {
+		// switch skip mode
+		if (speed == 2) {
+			speed = 0;
+		} else {
+			speed = 2;
+		}
+	} else if (current == 2) {
 		scenes.push(new Save);
-	}
-	else if (current == 1) {
+	} else if (current == 3) {
+		scenes.push(new Load);
+	} else if (current == 4) {
 		scenes.jump(new Start);
 	}
-	current = 2;
+	current = 5;
 }
 
 bool Dialogue::onMouseMove(int x, int y) {
-	if (saveBtn.isInside(x, y)) {
+	if (autoBtn.isInside(x, y)) {
 		current = 0;
-	}else if (returnBtn.isInside(x, y)) {
+		return true;
+	} else if (skipBtn.isInside(x, y)) {
 		current = 1;
-	} else {
+		return true;
+	} else if (saveBtn.isInside(x, y)) {
 		current = 2;
-		return false;
+		return true;
+	} else if (loadBtn.isInside(x, y)) {
+		current = 3;
+		return true;
+	} else if (titleBtn.isInside(x, y)) {
+		current = 4;
+		return true;
+	} else {
+		current = 5;
 	}
-	return true;
+	return false;
 }
 
 void Dialogue::onMouseDown(int x, int y) {
 	if (onMouseMove(x, y)) {
-		Button_process();
+		processButtons();
+	} else {
+		processScript();
 	}
 }
 
 void Dialogue::update(void) {
 	tick++;
-	if (tick < 10) {
+	if (tick % 20 < 10) {
 		delta.move(0, 1);
-	} else if (tick < 20) {
+	} else if (tick % 20 < 20) {
 		delta.move(0, -1);
-	} else {
-		tick = -1;
+	}
+	if (speed) {
+		if (tick % speed == 0) {
+			processScript();
+		}
 	}
 }
 
@@ -116,7 +159,9 @@ void Dialogue::render(void) {
 	SDL_RenderCopy(renderer, text.getTexture(), nullptr, text.getRect());
 	SDL_RenderCopy(renderer, delta.getTexture(), nullptr, delta.getRect());
 	// Button
-	SDL_RenderCopy(renderer, current == 0 ? saveBtn.getActive() : saveBtn.getNormal(), nullptr, saveBtn.getRect());
-	SDL_RenderCopy(renderer, current == 1 ? returnBtn.getActive() : returnBtn.getNormal(), nullptr, returnBtn.getRect());
-
+	SDL_RenderCopy(renderer, (current == 0 || speed == 100) ? autoBtn.getActive() : autoBtn.getNormal(), nullptr, autoBtn.getRect());
+	SDL_RenderCopy(renderer, (current == 1 || speed == 2) ? skipBtn.getActive() : skipBtn.getNormal(), nullptr, skipBtn.getRect());
+	SDL_RenderCopy(renderer, current == 2 ? saveBtn.getActive() : saveBtn.getNormal(), nullptr, saveBtn.getRect());
+	SDL_RenderCopy(renderer, current == 3 ? loadBtn.getActive() : loadBtn.getNormal(), nullptr, loadBtn.getRect());
+	SDL_RenderCopy(renderer, current == 4 ? titleBtn.getActive() : titleBtn.getNormal(), nullptr, titleBtn.getRect());
 }

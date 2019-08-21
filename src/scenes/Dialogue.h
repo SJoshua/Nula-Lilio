@@ -14,6 +14,7 @@
 
 #include "scenes/Start.h"
 #include "scenes/Save.h"
+#include "scenes/Load.h"
 
 class Dialogue: public Scene {
 private:
@@ -21,19 +22,22 @@ private:
 	Texture background, character, text, name, delta;
 	bool showCharacter, showName;
 	int tick = 0;
-	int current = 2;
-	// 0: save
-	// 1: return
-	// 2: null
-	Button returnBtn, saveBtn;
-	Audio bgm,se;
+	int speed = 0;
+	int current = 5;
+	// 0: auto
+	// 1: skip
+	// 2: save
+	// 3: load
+	// 4: title
+	Button autoBtn, skipBtn, saveBtn, loadBtn, titleBtn;
+	Audio bgm, se;
 
 public:
 	Dialogue(std::string filename = "prologue.nls", int pos = 0);
 
-	void process(void);
+	void processScript(void);
 
-	void Button_process(void);
+	void processButtons(void);
 
 	void onKeyDown(SDL_Keycode code);
 
