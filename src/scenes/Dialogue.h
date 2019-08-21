@@ -2,6 +2,7 @@
 #define SCENES_DIALOGUE_H
 
 #include <SDL.h>
+#include <ctime>
 #include <string>
 
 #include "basic/Scene.h"
@@ -31,6 +32,8 @@ private:
 	// 4: title
 	Button autoBtn, skipBtn, saveBtn, loadBtn, titleBtn;
 	Audio bgm, se;
+
+	SDL_Texture* takeScreenshot(void);
 
 public:
 	Dialogue(std::string filename = "prologue.nls", int pos = 0);

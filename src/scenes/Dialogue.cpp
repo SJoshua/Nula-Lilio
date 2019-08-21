@@ -2,34 +2,45 @@
 
 extern SceneManager scenes;
 extern ResourceManager resources;
-extern SDL_Renderer *renderer;
+extern SDL_Renderer* renderer;
+extern SDL_Window* window;
 
 Dialogue::Dialogue(std::string filename, int pos) {
 	script = Script(filename, pos);
 	processScript();
-	delta = Texture(WINDOW_WIDTH * 85 / 100 , WINDOW_HEIGHT * 84 / 100,
-		resources.text("▼", resources.font(DEFAULT_FONT, 24))
-	);
+	delta = Texture(WINDOW_WIDTH * 85 / 100, WINDOW_HEIGHT * 84 / 100,
+		resources.text("▼", resources.font(DEFAULT_FONT, 24)));
 	autoBtn = Button(WINDOW_WIDTH / 100 * 47, WINDOW_HEIGHT / 100 * 94,
 		resources.text(" Auto ", resources.font(DEFAULT_FONT, 40)),
-		resources.text("[Auto]", resources.font(DEFAULT_FONT, 40))
-	);
+		resources.text("[Auto]", resources.font(DEFAULT_FONT, 40)));
 	skipBtn = Button(WINDOW_WIDTH / 100 * 56, WINDOW_HEIGHT / 100 * 94,
 		resources.text(" Skip ", resources.font(DEFAULT_FONT, 40)),
-		resources.text("[Skip]", resources.font(DEFAULT_FONT, 40))
-	);
+		resources.text("[Skip]", resources.font(DEFAULT_FONT, 40)));
 	saveBtn = Button(WINDOW_WIDTH / 100 * 65, WINDOW_HEIGHT / 100 * 94,
 		resources.text(" Save ", resources.font(DEFAULT_FONT, 40)),
-		resources.text("[Save]", resources.font(DEFAULT_FONT, 40))
-	);
+		resources.text("[Save]", resources.font(DEFAULT_FONT, 40)));
 	loadBtn = Button(WINDOW_WIDTH / 100 * 74, WINDOW_HEIGHT / 100 * 94,
 		resources.text(" Load ", resources.font(DEFAULT_FONT, 40)),
-		resources.text("[Load]", resources.font(DEFAULT_FONT, 40))
-	);
+		resources.text("[Load]", resources.font(DEFAULT_FONT, 40)));
 	titleBtn = Button(WINDOW_WIDTH / 100 * 83, WINDOW_HEIGHT / 100 * 94,
 		resources.text(" Title ", resources.font(DEFAULT_FONT, 40)),
-		resources.text("[Title]", resources.font(DEFAULT_FONT, 40))
-	);
+		resources.text("[Title]", resources.font(DEFAULT_FONT, 40)));
+}
+
+SDL_Texture* Dialogue::takeScreenshot(void) {
+	SDL_Texture *screenshot = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
+	SDL_Texture *ret = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 4);
+
+	SDL_SetRenderTarget(renderer, screenshot);
+	render();
+	
+	SDL_SetRenderTarget(renderer, ret);
+	SDL_Rect rect = { 0, 0, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 4 };
+	SDL_RenderCopy(renderer, screenshot, nullptr, &rect);
+
+	SDL_SetRenderTarget(renderer, nullptr);
+
+	return ret;
 }
 
 void Dialogue::processScript(void) {
@@ -44,14 +55,12 @@ void Dialogue::processScript(void) {
 	} else {
 		showCharacter = false;
 	}
-	text = Texture(WINDOW_WIDTH * 12 / 100 , WINDOW_HEIGHT * 72 / 100,
-		resources.text(script.getText(), resources.font(DEFAULT_FONT, 24))
-	);
+	text = Texture(WINDOW_WIDTH * 12 / 100, WINDOW_HEIGHT * 72 / 100,
+		resources.text(script.getText(), resources.font(DEFAULT_FONT, 24)));
 	if (!script.getCharacterName().empty()) {
 		showName = true;
 		name = Texture(WINDOW_WIDTH * 12 / 100, WINDOW_HEIGHT * 64 / 100,
-			resources.text(script.getCharacterName(), resources.font(DEFAULT_FONT, 24))
-		);
+			resources.text(script.getCharacterName(), resources.font(DEFAULT_FONT, 24)));
 	} else {
 		showName = false;
 	}
@@ -59,11 +68,11 @@ void Dialogue::processScript(void) {
 
 void Dialogue::onKeyDown(SDL_Keycode code) {
 	switch (code) {
-		case SDLK_RETURN:
-		case SDLK_SPACE:
-			//se.PlayChunk("test.wav"); 
-			processScript();
-			break;
+	case SDLK_RETURN:
+	case SDLK_SPACE:
+		//se.PlayChunk("test.wav");
+		processScript();
+		break;
 	}
 }
 
@@ -83,7 +92,12 @@ void Dialogue::processButtons(void) {
 			speed = 2;
 		}
 	} else if (current == 2) {
-		scenes.push(new Save);
+		scenes.push(new Save(Savedata(
+			script.getTag(),
+			script.getText(),
+			script.getPosition(),
+			takeScreenshot(),
+			time(nullptr))));
 	} else if (current == 3) {
 		scenes.push(new Load);
 	} else if (current == 4) {
@@ -144,14 +158,14 @@ void Dialogue::render(void) {
 		SDL_RenderCopy(renderer, character.getTexture(), nullptr, character.getRect());
 	}
 	// Text Box
-	SDL_Rect rect = {WINDOW_WIDTH * 10 / 100, WINDOW_HEIGHT * 70 / 100, WINDOW_WIDTH * 80 / 100, WINDOW_HEIGHT * 20 / 100};
-	SDL_SetRenderDrawColor(renderer, 0, 128, 192, 0xCF);
+	SDL_Rect rect = { WINDOW_WIDTH * 10 / 100, WINDOW_HEIGHT * 70 / 100, WINDOW_WIDTH * 80 / 100, WINDOW_HEIGHT * 20 / 100 };
+	SDL_SetRenderDrawColor(renderer, 180, 193, 250, 0xCF);
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_RenderFillRect(renderer, &rect);
 
 	// Name
 	if (showName) {
-		SDL_Rect rect2 = {WINDOW_WIDTH * 11 / 100, WINDOW_HEIGHT * 63 / 100, WINDOW_WIDTH * 10 / 100, WINDOW_HEIGHT * 6 / 100};
+		SDL_Rect rect2 = { WINDOW_WIDTH * 11 / 100, WINDOW_HEIGHT * 63 / 100, WINDOW_WIDTH * 10 / 100, WINDOW_HEIGHT * 6 / 100 };
 		SDL_SetRenderDrawColor(renderer, 255, 201, 14, 0xBF);
 		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 		SDL_RenderFillRect(renderer, &rect2);
@@ -161,7 +175,7 @@ void Dialogue::render(void) {
 	SDL_RenderCopy(renderer, delta.getTexture(), nullptr, delta.getRect());
 
 	// Toolbar
-	SDL_Rect rect3 = { WINDOW_WIDTH * 44 / 100, WINDOW_HEIGHT * 93 / 100, WINDOW_WIDTH * 46 / 100, WINDOW_HEIGHT * 6.5 / 100 };
+	SDL_Rect rect3 = { WINDOW_WIDTH * 44 / 100, WINDOW_HEIGHT * 93 / 100, WINDOW_WIDTH * 46 / 100, WINDOW_HEIGHT * 65 / 1000 };
 	SDL_SetRenderDrawColor(renderer, 255, 174, 201, 0x5F);
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_RenderFillRect(renderer, &rect3);
