@@ -536,7 +536,7 @@
 	　不犯规吗？怎么回事，这个吓一跳！
 
 #[和訳 x=「手助けが必要？」]
-[露卡]	「Ĉu vi povas helpi al vi?」
+[露卡]	「Cxu vi povas helpi al vi?」
 
 	　这么一来，不就不好抱怨了吗！
 
@@ -545,7 +545,7 @@
 [凛]	「那，那个……摄像头在哪里？」
 
 #[和訳 x="「……『Ｄｏｋｏ(船のドッグ)』？　㍗ｉｐｏ(船)？　……㍗ｉｐａｎｏ(船員さん)!?」"]
-[露卡]	「...Doko? Ŝipo? ...Ŝipano!?」
+[露卡]	「...Doko? Sxipo? ...Sxipano!?」
 
 [凛]	「呃，摄像头……是“Camera”来着？」
 
@@ -572,7 +572,7 @@
 @bg[ev/ruka/a2.png]
 
 #[和訳 x=「どこに住んでいるの？」]
-[露卡]	「Kie vi loĝas?」
+[露卡]	「Kie vi logxas?」
 
 	　好像在问我什么东西，但我完全搞不懂是什么意思。
 
@@ -583,7 +583,7 @@
 @bg[ev/ruka/c1.png]
 
 #[和訳 x=「道に迷いましたか？」]
-[露卡]	「Ĉu vi perdis la vojon?」
+[露卡]	「Cxu vi perdis la vojon?」
 
 	　她好像很关心我的样子，让我有些难过。
 
@@ -602,14 +602,14 @@
 @bg[ev/ruka/a2.png]
 
 #[和訳 x=「Ｊｕｌｉａｍｏ(フミヅキアイ)を話せますか？」]
-[露卡]	「Ĉu vi parolas la lingvon "Juliamo"?」
+[露卡]	「Cxu vi parolas la lingvon "Juliamo"?」
 
 # 分歧点
-@sl[{Ĉu vi?$cxu_vi}{Parolas?$parolas}{Juliamo?$juliamo}]
+@sl[{Cxu vi?$cxu_vi}{Parolas?$parolas}{Juliamo?$juliamo}]
 
 $cxu_vi
 
-[凛]	「Ĉu vi?」
+[凛]	「Cxu vi?」
 
 	　一边想起柚实家中的小狗『丘比』，试着重复她说的话。
 
@@ -671,7 +671,7 @@ $parolas
 [凛]	　哦？好像得到了不错的回答——
 
 #[和訳 x="「ほんと？　話せるの!?」"]
-[露卡]	「Ĉu vere?  Ĉu vi povas paroli!?」
+[露卡]	「Cxu vere?  Cxu vi povas paroli!?」
 
 	　不妙！
 
@@ -732,7 +732,7 @@ $juliamo
 	　什么的，试着自我吐槽了一下。
 
 #[和訳 x=「あなた、“Ｋｏｒｅｓｐｏｎｄａｎｔｏ(文通者)”じゃないの？」]
-[露卡]	「Ĉu vi ne estas korespondanto?」
+[露卡]	「Cxu vi ne estas korespondanto?」
 
 @bg[ev/ruka/b1.png]
 
