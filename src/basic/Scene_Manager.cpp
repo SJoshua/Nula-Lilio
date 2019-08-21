@@ -15,7 +15,7 @@ Scene* SceneManager::top(void) {
 	return list.back();
 }
 
-void SceneManager::jump(Scene* scene) {
+void SceneManager::jump(Scene *scene) {
 	pop();
 	push(scene);
 }

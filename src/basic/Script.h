@@ -36,6 +36,8 @@ public:
 
 	std::string getTag(void);
 
+	unsigned int getPosition(void);
+
 	void jump(int p);
 
 	bool next(void);

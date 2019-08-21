@@ -17,6 +17,12 @@ void Script::readScript(std::string filename) {
 	while (getline(fs, str)) { 
 		if (str.empty()) {
 			if (!con.empty()) {
+				if (nextCharacter == "-") {
+					nextCharacter.clear();
+				}
+				if (nextBackground == "-") {
+					nextBackground = "black";
+				}
 				script.push_back({tag, con, nextBackground, nextCharacter});
 				tag.clear();
 				con.clear();
@@ -24,21 +30,33 @@ void Script::readScript(std::string filename) {
 		} else {
 			if (str[0] == '#') { // Comments
 				continue;
-			} else if (str[0] == '@') { // Commands
-				if (str.substr(1, 3) == "bg[") {
+			} else if (str[0] == '@' && str[3] == '[') { // Commands
+				auto cmd = str.substr(1, 2);
+				if (cmd == "bg") {
 					for (unsigned int i = 5; i < str.length(); i++) {
 						if (str[i] == ']') {
 							nextBackground = str.substr(4, i - 4);
 						}
 					}
-				}
-				if (str.substr(1, 3) == "ch[") {
+				} else if (cmd == "ch") {
 					for (unsigned int i = 5; i < str.length(); i++) {
 						if (str[i] == ']') {
 							nextCharacter = str.substr(4, i - 4);
 						}
 					}
+				} else if (cmd == "jp") {
+					for (unsigned int i = 5; i < str.length(); i++) {
+						if (str[i] == ']') {
+							tag = "{JUMP}";
+							con = str.substr(4, i - 4);
+						}
+					}
+				} else if (cmd == "sl") {
+					// to-do
+				} else {
+					std::cout << "Unsupported command indicator: " << cmd << std::endl;
 				}
+				
 			} else {
 				if (tag.empty()) {
 					if (str[0] == '[') {
@@ -56,6 +74,9 @@ void Script::readScript(std::string filename) {
 						}
 						con += str.substr(i + 1, str.length() - i - 1);
 						break;
+					} else if (str[i] == '$') {
+						tag = "{FLAG}";
+						con = str.substr(i + 1, str.length() - i + 1);
 					}
 				}
 			}
@@ -84,6 +105,10 @@ std::string Script::getTag(void) {
 	return tag;
 }
 
+unsigned int Script::getPosition(void) {
+	return pos;
+}
+
 void Script::jump(int p) {
 	pos = p;
 }
@@ -93,6 +118,16 @@ bool Script::next(void) {
 	if (pos >= script.size()) {
 		return false;
 	} else {
+		if (script[pos].name == "{INFO}" || script[pos].name == "{FLAG}") {
+			return next();
+		} else if (script[pos].name == "{JUMP}") {
+			for (unsigned int i = pos; i < script.size(); i++) {
+				if (script[i].name == "{FLAG}" && script[i].text == script[pos].text) {
+					pos = i;
+					return next();
+				}
+			}
+		}
 		return true;
 	}
 }	

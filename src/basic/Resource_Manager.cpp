@@ -76,6 +76,9 @@ TTF_Font* ResourceManager::font(std::string filename, int size) {
 
 SDL_Texture* ResourceManager::picture(std::string filename) {	
 	std::string path = "./resource/pictures/" + filename;
+	if (filename.empty()) {
+		return nullptr;
+	}
 	if (!pictures.count(filename)) {
 		auto pic = loadPicture(path);
 		if (pic == nullptr) {
@@ -134,7 +137,7 @@ void ResourceManager::free(void) {
 	for (auto e: chunks) {
 		Mix_FreeChunk(e.second);
 	}
-	for (auto e : musics) {
+	for (auto e: musics) {
 		Mix_FreeMusic(e.second);
 	}
 	for (auto e: fonts) {
