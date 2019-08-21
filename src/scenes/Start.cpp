@@ -39,7 +39,7 @@ void Start::process(void) {
 	} else if (current == 2) {
 		scenes.push(new Exit);
 	}
-	current = 3;
+	current = -1;
 }
 
 void Start::onKeyDown(SDL_Keycode code) {

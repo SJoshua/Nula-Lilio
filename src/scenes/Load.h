@@ -5,6 +5,7 @@
 #include <vector>
 #include <SDL.h>
 
+#include "basic/Savedata.h"
 #include "basic/Scene.h"
 #include "basic/Scene_Manager.h"
 #include "basic/Resource_Manager.h"
@@ -15,16 +16,10 @@
 #include "scenes/Start.h"
 #include "scenes/Loading.h"
 
-struct savedata {
-	std::string tag;
-	SDL_Texture *pic;
-	int pos;
-};
-
 class Load: public Scene {
 private:
 	Texture background;
-	std::vector <savedata> data;
+	std::vector <Savedata> data;
 	int current = 10;
 	/*
 	0 return
