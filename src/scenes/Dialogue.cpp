@@ -10,23 +10,23 @@ Dialogue::Dialogue(std::string filename, int pos) {
 	delta = Texture(WINDOW_WIDTH * 85 / 100 , WINDOW_HEIGHT * 84 / 100,
 		resources.text("▼", resources.font(DEFAULT_FONT, 24))
 	);
-	autoBtn = Button(WINDOW_WIDTH / 100 * 42, WINDOW_HEIGHT / 100 * 94,
+	autoBtn = Button(WINDOW_WIDTH / 100 * 47, WINDOW_HEIGHT / 100 * 94,
 		resources.text(" Auto ", resources.font(DEFAULT_FONT, 40)),
 		resources.text("[Auto]", resources.font(DEFAULT_FONT, 40))
 	);
-	skipBtn = Button(WINDOW_WIDTH / 100 * 51, WINDOW_HEIGHT / 100 * 94,
+	skipBtn = Button(WINDOW_WIDTH / 100 * 56, WINDOW_HEIGHT / 100 * 94,
 		resources.text(" Skip ", resources.font(DEFAULT_FONT, 40)),
 		resources.text("[Skip]", resources.font(DEFAULT_FONT, 40))
 	);
-	saveBtn = Button(WINDOW_WIDTH / 100 * 60, WINDOW_HEIGHT / 100 * 94,
+	saveBtn = Button(WINDOW_WIDTH / 100 * 65, WINDOW_HEIGHT / 100 * 94,
 		resources.text(" Save ", resources.font(DEFAULT_FONT, 40)),
 		resources.text("[Save]", resources.font(DEFAULT_FONT, 40))
 	);
-	loadBtn = Button(WINDOW_WIDTH / 100 * 69, WINDOW_HEIGHT / 100 * 94,
+	loadBtn = Button(WINDOW_WIDTH / 100 * 74, WINDOW_HEIGHT / 100 * 94,
 		resources.text(" Load ", resources.font(DEFAULT_FONT, 40)),
 		resources.text("[Load]", resources.font(DEFAULT_FONT, 40))
 	);
-	titleBtn = Button(WINDOW_WIDTH / 100 * 78, WINDOW_HEIGHT / 100 * 94,
+	titleBtn = Button(WINDOW_WIDTH / 100 * 83, WINDOW_HEIGHT / 100 * 94,
 		resources.text(" Title ", resources.font(DEFAULT_FONT, 40)),
 		resources.text("[Title]", resources.font(DEFAULT_FONT, 40))
 	);
@@ -145,9 +145,10 @@ void Dialogue::render(void) {
 	}
 	// Text Box
 	SDL_Rect rect = {WINDOW_WIDTH * 10 / 100, WINDOW_HEIGHT * 70 / 100, WINDOW_WIDTH * 80 / 100, WINDOW_HEIGHT * 20 / 100};
-	SDL_SetRenderDrawColor(renderer, 0, 128, 192, 0xEF);
+	SDL_SetRenderDrawColor(renderer, 0, 128, 192, 0xCF);
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_RenderFillRect(renderer, &rect);
+
 	// Name
 	if (showName) {
 		SDL_Rect rect2 = {WINDOW_WIDTH * 11 / 100, WINDOW_HEIGHT * 63 / 100, WINDOW_WIDTH * 10 / 100, WINDOW_HEIGHT * 6 / 100};
@@ -158,6 +159,13 @@ void Dialogue::render(void) {
 	}
 	SDL_RenderCopy(renderer, text.getTexture(), nullptr, text.getRect());
 	SDL_RenderCopy(renderer, delta.getTexture(), nullptr, delta.getRect());
+
+	// Toolbar
+	SDL_Rect rect3 = { WINDOW_WIDTH * 44 / 100, WINDOW_HEIGHT * 93 / 100, WINDOW_WIDTH * 46 / 100, WINDOW_HEIGHT * 6.5 / 100 };
+	SDL_SetRenderDrawColor(renderer, 255, 174, 201, 0x5F);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_RenderFillRect(renderer, &rect3);
+
 	// Button
 	SDL_RenderCopy(renderer, (current == 0 || speed == 100) ? autoBtn.getActive() : autoBtn.getNormal(), nullptr, autoBtn.getRect());
 	SDL_RenderCopy(renderer, (current == 1 || speed == 2) ? skipBtn.getActive() : skipBtn.getNormal(), nullptr, skipBtn.getRect());
