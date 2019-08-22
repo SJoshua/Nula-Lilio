@@ -94,11 +94,15 @@ void Dialogue::processScript(void) {
 			};
 
 			SDL_SetRenderTarget(renderer, normal);
+			SDL_SetTextureBlendMode(normal, SDL_BLENDMODE_BLEND);
+			SDL_SetTextureAlphaMod(normal, 0x9F);
 			SDL_SetRenderDrawColor(renderer, 0x4F, 0xFF, 0xFF, 0xFF);
 			SDL_RenderFillRect(renderer, nullptr);
 			SDL_RenderCopy(renderer, selectTexts[i].getTexture(), nullptr, &rect);
 
 			SDL_SetRenderTarget(renderer, active);
+			SDL_SetTextureBlendMode(active, SDL_BLENDMODE_BLEND);
+			SDL_SetTextureAlphaMod(active, 0x9F);
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0x9F, 0xEF, 0xFF);
 			SDL_RenderFillRect(renderer, nullptr);
 			SDL_RenderCopy(renderer, selectTexts[i].getTexture(), nullptr, &rect);
