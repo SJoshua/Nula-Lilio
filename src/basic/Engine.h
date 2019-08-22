@@ -16,6 +16,13 @@
 #include "scenes/Dialogue.h"
 
 class Engine {
+private:
+	Uint32 cap_mStartTicks, fps_mStartTicks;
+	Uint32 cap_mPausedTicks, fps_mPausedTicks;
+	bool cap_mPaused, fps_mPaused;
+	bool cap_mStarted, fps_mStarted;
+	std::stringstream timeText;
+
 public:
 	Engine (void);
 

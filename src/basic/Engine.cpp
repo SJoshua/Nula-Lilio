@@ -79,16 +79,61 @@ void Engine::close(void) {
 
 void Engine::run(void) {
 	running = true;
+
+	int countedFrames = 0;
+
+	fps_mStartTicks = 0;
+	fps_mPausedTicks = 0;
+	fps_mPaused = false;
+	fps_mStarted = false;
+
 	while (running) {
+
+		cap_mStarted = true;
+		cap_mPaused = false;
+		cap_mStartTicks = SDL_GetTicks();
+		cap_mPausedTicks = 0;
+
 		SDL_RenderClear(renderer);
 		scenes.initFrame();
 		SDL_Event e;
 		while (SDL_PollEvent(&e)) {
 			scenes.handle(e);
 		}
+
+		Uint32 time = 0;
+
+		if (fps_mStarted) {
+			if (fps_mPaused) {
+				time = fps_mPausedTicks;
+			} else {
+				time = SDL_GetTicks() - fps_mStartTicks;
+			}
+		}
+
+		float avgFPS = countedFrames / (time / 1000.f);
+		if (avgFPS > 2000000) {
+			avgFPS = 0;
+		}
+
 		scenes.update();
 		scenes.render();
 		SDL_RenderPresent(renderer);
-		SDL_Delay(1000 / 60); // To-do: SDL Timer
+		++countedFrames;
+
+		time = 0;
+
+		if (cap_mStarted) {
+			if (cap_mPaused) {
+				time = cap_mPausedTicks;
+			} else {
+				time = SDL_GetTicks() - cap_mStartTicks;
+			}
+		}
+
+		int frameTicks = time;
+		if (frameTicks < TICKS_PER_FRAME) {
+			SDL_Delay(TICKS_PER_FRAME - frameTicks);
+		}
 	}
 }
