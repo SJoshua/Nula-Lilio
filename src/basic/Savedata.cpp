@@ -69,7 +69,7 @@ void Savedata::read(int stock) {
 		std::getline(is, data);
 		if (!data.empty()) {
 			unserialize(data);
-			pic = resources.picture("../../" + filename + ".png", true);
+			pic = resources.picture("../../" + filename + ".png", 0, 0, true);
 		}
 		is.close();
 	}
