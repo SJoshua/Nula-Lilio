@@ -1,18 +1,18 @@
 #ifndef SCENES_SAVE_H
 #define SCENES_SAVE_H
 
-#include <fstream>
-#include <vector>
-#include <memory>
 #include <SDL.h>
+#include <fstream>
+#include <memory>
+#include <vector>
 
+#include "basic/Resource_Manager.h"
 #include "basic/Savedata.h"
 #include "basic/Scene.h"
 #include "basic/Scene_Manager.h"
-#include "basic/Resource_Manager.h"
 
-#include "ui/Texture.h"
 #include "ui/Button.h"
+#include "ui/Texture.h"
 
 #include "scenes/Dialogue.h"
 #include "scenes/Saving.h"
@@ -40,7 +40,6 @@ public:
 	void render(void);
 
 	void refresh(int specific = 0);
-
 };
 
 #endif

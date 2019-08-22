@@ -2,7 +2,7 @@
 
 extern SceneManager scenes;
 extern ResourceManager resources;
-extern SDL_Renderer* renderer;
+extern SDL_Renderer *renderer;
 
 const int Gap = WINDOW_HEIGHT * 2 / 100;
 const int Load_X = Gap;
@@ -13,11 +13,11 @@ const int pic_height = WINDOW_HEIGHT * 45 / 100;
 const int pic_X = WINDOW_WIDTH / 2 + Gap * 3;
 const int pic_Y = (WINDOW_HEIGHT - pic_height) / 2;
 
-Save::Save(Savedata state) : state(state) {
+Save::Save(Savedata state): state(state) {
 	background = Texture(0, 0, resources.picture("blackboard.png"));
 
 	title = Texture(0, 0, resources.text("Nula Lilio Savedata", resources.font(DEFAULT_FONT, 60)));
-	saveLabel = Texture(WINDOW_WIDTH * 78 / 100, WINDOW_HEIGHT * 10 / 100, resources.text("- Save -", resources.font(DEFAULT_FONT, 40), {0xFF, 0xFF, 0xFF}));
+	saveLabel = Texture(WINDOW_WIDTH * 78 / 100, WINDOW_HEIGHT * 10 / 100, resources.text("- Save -", resources.font(DEFAULT_FONT, 40), { 0xFF, 0xFF, 0xFF }));
 
 	backBtn = Button(WINDOW_WIDTH * 80 / 100, WINDOW_HEIGHT * 85 / 100,
 		resources.text(" Back ", resources.font(DEFAULT_FONT, 40), { 0xFF, 0xFF, 0x9F }),
@@ -126,7 +126,7 @@ void Save::render(void) {
 	// Buttons
 	SDL_RenderCopy(renderer, current == 0 ? backBtn.getActive() : backBtn.getNormal(), nullptr, backBtn.getRect());
 	for (int i = 1; i <= 9; i++) {
-		SDL_Rect* tmp = Texture(0, 0, buttons[i].getActive()).getRect();
+		SDL_Rect *tmp = Texture(0, 0, buttons[i].getActive()).getRect();
 		SDL_Rect rect = {
 			WINDOW_WIDTH * 5 / 100 + (WINDOW_WIDTH * 35 / 100 - tmp->w) / 2,
 			WINDOW_HEIGHT * 145 / 1000 + WINDOW_HEIGHT * 8 * (i - 1) / 100 + (WINDOW_HEIGHT * 7 / 100 - tmp->h) / 2,

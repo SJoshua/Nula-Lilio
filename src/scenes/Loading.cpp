@@ -2,22 +2,19 @@
 
 extern SceneManager scenes;
 extern ResourceManager resources;
-extern SDL_Renderer* renderer;
+extern SDL_Renderer *renderer;
 
 Loading::Loading(void) {
 	yesBtn = Button(WINDOW_WIDTH / 10 * 3, WINDOW_HEIGHT / 10 * 6,
 		resources.text(" Yes ", resources.font(DEFAULT_FONT, 60)),
-		resources.text("[Yes]", resources.font(DEFAULT_FONT, 60))
-	);
+		resources.text("[Yes]", resources.font(DEFAULT_FONT, 60)));
 
 	noBtn = Button(WINDOW_WIDTH / 20 * 11, WINDOW_HEIGHT / 10 * 6,
 		resources.text(" No ", resources.font(DEFAULT_FONT, 60)),
-		resources.text("[No]", resources.font(DEFAULT_FONT, 60))
-	);
+		resources.text("[No]", resources.font(DEFAULT_FONT, 60)));
 
 	notice = Texture(WINDOW_WIDTH * 27 / 100, WINDOW_HEIGHT / 10 * 3,
-		resources.text("データをロードしますか？", resources.font(DEFAULT_FONT, 45))
-	);
+		resources.text("データをロードしますか？", resources.font(DEFAULT_FONT, 45)));
 }
 
 void Loading::process(void) {
@@ -44,11 +41,9 @@ void Loading::onKeyDown(SDL_Keycode code) {
 bool Loading::onMouseMove(int x, int y) {
 	if (yesBtn.isInside(x, y)) {
 		current = 0;
-	}
-	else if (noBtn.isInside(x, y)) {
+	} else if (noBtn.isInside(x, y)) {
 		current = 1;
-	}
-	else {
+	} else {
 		return false;
 	}
 	return true;
@@ -61,7 +56,6 @@ void Loading::onMouseDown(int x, int y) {
 }
 
 void Loading::update(void) {
-
 }
 
 void Loading::render(void) {

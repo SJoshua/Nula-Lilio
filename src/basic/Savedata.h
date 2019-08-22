@@ -1,15 +1,15 @@
 #ifndef BASIC_SAVEDATA_H
 #define BASIC_SAVEDATA_H
 
-#include <iostream>
-#include <iomanip>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <ctime>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <ctime>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
 #include <memory>
+#include <sstream>
+#include <string>
 
 #include "basic/Resource_Manager.h"
 
@@ -22,7 +22,7 @@ public:
 
 	Savedata(void);
 
-	Savedata(std::string tag, std::string text, unsigned int pos, SDL_Texture* pic, time_t timestamp);
+	Savedata(std::string tag, std::string text, unsigned int pos, SDL_Texture *pic, time_t timestamp);
 
 	std::string serialize(void);
 

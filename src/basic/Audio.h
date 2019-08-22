@@ -3,15 +3,15 @@
 
 #include <SDL.h>
 #include <SDL_mixer.h>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
-#include "basic/Resource_Manager.h"
 #include "basic/Config.h"
+#include "basic/Resource_Manager.h"
 
 class Audio {
 public:
-	Audio (void);
+	Audio(void);
 
 	void PlayMusic(std::string filename);
 
@@ -24,7 +24,6 @@ public:
 	void StopMusic(void);
 
 	void StopMusic(int late);
-
 };
 
-#endif 
+#endif

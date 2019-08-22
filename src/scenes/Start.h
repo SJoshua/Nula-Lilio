@@ -1,14 +1,14 @@
 #ifndef SCENES_START_H
 #define SCENES_START_H
 
+#include "basic/Audio.h"
+#include "basic/Config.h"
+#include "basic/Resource_Manager.h"
 #include "basic/Scene.h"
 #include "basic/Scene_Manager.h"
-#include "basic/Resource_Manager.h"
-#include "basic/Config.h"
-#include "basic/Audio.h"
 
-#include "ui/Texture.h"
 #include "ui/Button.h"
+#include "ui/Texture.h"
 
 #include "scenes/Dialogue.h"
 #include "scenes/Exit.h"
@@ -16,7 +16,7 @@
 
 class Start: public Scene {
 private:
-	int current = -1; 
+	int current = -1;
 	// 0: Game Start
 	// 1: Continue
 	// 2: Exit
@@ -30,7 +30,7 @@ public:
 	void process(void);
 
 	void onKeyDown(SDL_Keycode code);
-	
+
 	bool onMouseMove(int x, int y);
 
 	void onMouseDown(int x, int y);
@@ -38,7 +38,6 @@ public:
 	void update(void);
 
 	void render(void);
-	
 };
 
 #endif

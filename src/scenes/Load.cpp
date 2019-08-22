@@ -2,7 +2,7 @@
 
 extern SceneManager scenes;
 extern ResourceManager resources;
-extern SDL_Renderer* renderer;
+extern SDL_Renderer *renderer;
 
 const int Gap = WINDOW_HEIGHT * 2 / 100;
 const int Load_X = Gap;
@@ -114,7 +114,7 @@ void Load::render(void) {
 	// Buttons
 	SDL_RenderCopy(renderer, current == 0 ? backBtn.getActive() : backBtn.getNormal(), nullptr, backBtn.getRect());
 	for (int i = 1; i <= 9; i++) {
-		SDL_Rect* tmp = Texture(0, 0, buttons[i].getActive()).getRect();
+		SDL_Rect *tmp = Texture(0, 0, buttons[i].getActive()).getRect();
 		SDL_Rect rect = {
 			WINDOW_WIDTH * 5 / 100 + (WINDOW_WIDTH * 35 / 100 - tmp->w) / 2,
 			WINDOW_HEIGHT * 145 / 1000 + WINDOW_HEIGHT * 8 * (i - 1) / 100 + (WINDOW_HEIGHT * 7 / 100 - tmp->h) / 2,

@@ -9,14 +9,12 @@ Start::Start(void) {
 
 	startBtn = Button(400, 380,
 		resources.text(" Game Start ", resources.font(DEFAULT_FONT, 40)),
-		resources.text("<Game Start>", resources.font(DEFAULT_FONT, 40))
-	);
+		resources.text("<Game Start>", resources.font(DEFAULT_FONT, 40)));
 
 	continueBtn = Button(400, 440,
 		resources.text(" Continue ", resources.font(DEFAULT_FONT, 40)),
-		resources.text("<Continue>", resources.font(DEFAULT_FONT, 40))
-	);
-	
+		resources.text("<Continue>", resources.font(DEFAULT_FONT, 40)));
+
 	//configBtn = Button(400, 500,
 	//	resources.text(" Config ", resources.font(DEFAULT_FONT, 40)),
 	//	resources.text("<Config>", resources.font(DEFAULT_FONT, 40))
@@ -24,8 +22,7 @@ Start::Start(void) {
 
 	exitBtn = Button(400, 500,
 		resources.text(" Exit ", resources.font(DEFAULT_FONT, 40)),
-		resources.text("<Exit>", resources.font(DEFAULT_FONT, 40))
-	);
+		resources.text("<Exit>", resources.font(DEFAULT_FONT, 40)));
 
 	text = Texture(300, 180, resources.text("Nula Lilio", resources.font(DEFAULT_FONT, 100)));
 }
@@ -46,16 +43,16 @@ void Start::onKeyDown(SDL_Keycode code) {
 	// const Uint8 *currentKeyStates = SDL_GetKeyboardState(nullptr);
 	// int step = currentKeyStates[SDL_SCANCODE_LSHIFT] ? 4 : 1;
 	switch (code) {
-		case SDLK_RIGHT:
-		case SDLK_DOWN:
-			(current += 1) %= 3;
-			break;
-		case SDLK_LEFT:
-		case SDLK_UP:
-			(current += 2) %= 3;
-			break;
-		case SDLK_RETURN:
-			process();
+	case SDLK_RIGHT:
+	case SDLK_DOWN:
+		(current += 1) %= 3;
+		break;
+	case SDLK_LEFT:
+	case SDLK_UP:
+		(current += 2) %= 3;
+		break;
+	case SDLK_RETURN:
+		process();
 	}
 }
 
@@ -64,8 +61,8 @@ bool Start::onMouseMove(int x, int y) {
 		current = 0;
 	} else if (continueBtn.isInside(x, y)) {
 		current = 1;
-	//} else if (configBtn.isInside(x, y)) {
-	//	current = 2;
+		//} else if (configBtn.isInside(x, y)) {
+		//	current = 2;
 	} else if (exitBtn.isInside(x, y)) {
 		current = 2;
 	} else {
@@ -83,7 +80,6 @@ void Start::onMouseDown(int x, int y) {
 }
 
 void Start::update(void) {
-
 }
 
 void Start::render(void) {

@@ -20,7 +20,6 @@ public:
 	SDL_Rect* getRect(void);
 
 	bool isInside(int px, int py);
-	
 };
 
 #endif

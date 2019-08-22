@@ -1,8 +1,8 @@
 #ifndef BASIC_SCENE_MANAGER_H
 #define BASIC_SCENE_MANAGER_H
 
-#include <deque>
 #include <SDL.h>
+#include <deque>
 #include <memory>
 
 #include "basic/Scene.h"
@@ -19,7 +19,7 @@ public:
 	void push(Scene *scene);
 
 	void pop(void);
-	
+
 	Scene* top(void);
 
 	void jump(Scene *scene);
@@ -31,7 +31,6 @@ public:
 	void update(void);
 
 	void render(void);
-
 };
 
 #endif

@@ -1,7 +1,8 @@
 #include "basic/Scene_Manager.h"
 #include <iostream>
 
-SceneManager::SceneManager(void) {}
+SceneManager::SceneManager(void) {
+}
 
 void SceneManager::push(Scene *scene) {
 	list.push_back(scene);

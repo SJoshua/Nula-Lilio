@@ -1,12 +1,13 @@
 #include "Resource_Manager.h"
 
-extern SDL_Renderer* renderer;
+extern SDL_Renderer *renderer;
 
-ResourceManager::ResourceManager(void) {}
+ResourceManager::ResourceManager(void) {
+}
 
 void ResourceManager::init(void) {
-	SDL_Texture* black = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
-	SDL_Texture* white = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
+	SDL_Texture *black = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
+	SDL_Texture *white = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	SDL_SetRenderTarget(renderer, black);
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
@@ -23,11 +24,11 @@ void ResourceManager::init(void) {
 }
 
 SDL_Texture* ResourceManager::loadPicture(std::string path) {
-	auto* surface = IMG_Load(path.c_str());
+	auto *surface = IMG_Load(path.c_str());
 	if (surface == nullptr) {
 		std::cout << IMG_GetError() << std::endl;
 	} else {
-		auto* texture = SDL_CreateTextureFromSurface(renderer, surface);
+		auto *texture = SDL_CreateTextureFromSurface(renderer, surface);
 		if (texture == nullptr) {
 			std::cout << SDL_GetError() << std::endl;
 		} else {
@@ -39,7 +40,7 @@ SDL_Texture* ResourceManager::loadPicture(std::string path) {
 }
 
 TTF_Font* ResourceManager::loadFont(std::string path, int size) {
-	TTF_Font* font = TTF_OpenFont(path.c_str(), size);
+	TTF_Font *font = TTF_OpenFont(path.c_str(), size);
 	if (font == nullptr) {
 		std::cout << TTF_GetError() << std::endl;
 	}
@@ -47,7 +48,7 @@ TTF_Font* ResourceManager::loadFont(std::string path, int size) {
 }
 
 Mix_Chunk* ResourceManager::loadChunk(std::string path) {
-	Mix_Chunk* chunk = Mix_LoadWAV(path.c_str());
+	Mix_Chunk *chunk = Mix_LoadWAV(path.c_str());
 	if (chunk == nullptr) {
 		std::cout << Mix_GetError() << std::endl;
 	}
@@ -55,7 +56,7 @@ Mix_Chunk* ResourceManager::loadChunk(std::string path) {
 }
 
 Mix_Music* ResourceManager::loadMusic(std::string path) {
-	Mix_Music* music = Mix_LoadMUS(path.c_str());
+	Mix_Music *music = Mix_LoadMUS(path.c_str());
 	if (music == nullptr) {
 		std::cout << Mix_GetError() << std::endl;
 	}
@@ -91,7 +92,7 @@ SDL_Texture* ResourceManager::picture(std::string filename, int width, int heigh
 	}
 	if (pictures.count(filename)) {
 		if (width && height) {
-			auto* target = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+			auto *target = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
 			SDL_SetRenderTarget(renderer, target);
 			SDL_RenderCopy(renderer, pictures[filename], nullptr, nullptr);
 			SDL_SetRenderTarget(renderer, nullptr);
@@ -130,12 +131,12 @@ Mix_Music* ResourceManager::music(std::string filename) {
 	return musics[filename];
 }
 
-SDL_Texture* ResourceManager::text(std::string text, TTF_Font* font, SDL_Color color) {
-	auto* surface = TTF_RenderUTF8_Blended_Wrapped(font, text.c_str(), color, WINDOW_WIDTH);
+SDL_Texture* ResourceManager::text(std::string text, TTF_Font *font, SDL_Color color) {
+	auto *surface = TTF_RenderUTF8_Blended_Wrapped(font, text.c_str(), color, WINDOW_WIDTH);
 	if (surface == nullptr) {
 		std::cout << "[Failed] render text <" << text.c_str() << ">: " << TTF_GetError() << std::endl;
 	}
-	auto* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	auto *texture = SDL_CreateTextureFromSurface(renderer, surface);
 	if (texture == nullptr) {
 		std::cout << "[Failed] create texture: " << SDL_GetError() << std::endl;
 	}
@@ -144,17 +145,17 @@ SDL_Texture* ResourceManager::text(std::string text, TTF_Font* font, SDL_Color c
 }
 
 void ResourceManager::free(void) {
-	for (auto e : pictures) {
+	for (auto e: pictures) {
 		SDL_DestroyTexture(e.second);
 	}
-	for (auto e : chunks) {
+	for (auto e: chunks) {
 		Mix_FreeChunk(e.second);
 	}
-	for (auto e : musics) {
+	for (auto e: musics) {
 		Mix_FreeMusic(e.second);
 	}
-	for (auto e : fonts) {
-		for (auto s : e.second) {
+	for (auto e: fonts) {
+		for (auto s: e.second) {
 			TTF_CloseFont(s.second);
 		}
 	}

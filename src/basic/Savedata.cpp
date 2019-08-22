@@ -1,7 +1,7 @@
 #include "basic/Savedata.h"
 
 extern ResourceManager resources;
-extern SDL_Renderer* renderer;
+extern SDL_Renderer *renderer;
 
 Savedata::Savedata(void) {
 	tag = "{NULL}";
@@ -11,7 +11,7 @@ Savedata::Savedata(void) {
 	timestamp = 0;
 }
 
-Savedata::Savedata(std::string tag, std::string text, unsigned int pos, SDL_Texture* pic, time_t timestamp) : tag(tag), text(text), pos(pos), pic(pic), timestamp(timestamp) {}
+Savedata::Savedata(std::string tag, std::string text, unsigned int pos, SDL_Texture *pic, time_t timestamp): tag(tag), text(text), pos(pos), pic(pic), timestamp(timestamp) {}
 
 std::string Savedata::serialize(void) {
 	std::ostringstream buffer;
@@ -48,7 +48,7 @@ void Savedata::write(int stock) {
 	int width, height;
 	SDL_SetRenderTarget(renderer, pic);
 	SDL_QueryTexture(pic, nullptr, nullptr, &width, &height);
-	SDL_Surface* surface = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+	SDL_Surface *surface = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
 	SDL_RenderReadPixels(renderer, nullptr, surface->format->format, surface->pixels, surface->pitch);
 	IMG_SavePNG(surface, (filename + ".png").c_str());
 	SDL_FreeSurface(surface);

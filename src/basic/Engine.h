@@ -3,17 +3,17 @@
 
 #include <SDL.h>
 #include <SDL_Image.h>
-#include <SDL_ttf.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 #include <iostream>
 
+#include "basic/Config.h"
+#include "basic/Resource_Manager.h"
 #include "basic/Scene.h"
 #include "basic/Scene_Manager.h"
-#include "basic/Resource_Manager.h"
-#include "basic/Config.h"
 
-#include "scenes/Start.h"
 #include "scenes/Dialogue.h"
+#include "scenes/Start.h"
 
 class Engine {
 private:
@@ -24,7 +24,7 @@ private:
 	std::stringstream timeText;
 
 public:
-	Engine (void);
+	Engine(void);
 
 	bool init(void);
 

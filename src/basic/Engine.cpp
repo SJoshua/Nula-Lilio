@@ -1,23 +1,24 @@
 #include "basic/Engine.h"
 
-SDL_Window* window = nullptr;
-SDL_Surface* screen = nullptr;
-SDL_Renderer* renderer = nullptr;
+SDL_Window *window = nullptr;
+SDL_Surface *screen = nullptr;
+SDL_Renderer *renderer = nullptr;
 
 extern SceneManager scenes;
 extern ResourceManager resources;
 
 bool running = false;
 
-Engine::Engine (void) {}
+Engine::Engine(void) {
+}
 
 bool Engine::init(void) {
 	// Initialize SDL
 	if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
 		std::cout << SDL_GetError() << std::endl;
-		return false; 
+		return false;
 	}
-	
+
 	// Initialize SDL_Image
 	int flags = IMG_INIT_JPG | IMG_INIT_PNG;
 	if (!(IMG_Init(flags) & flags)) {
@@ -52,7 +53,7 @@ bool Engine::init(void) {
 
 	// Get the window screen
 	screen = SDL_GetWindowSurface(window);
-	
+
 	// Initialize Resource Manager
 	resources.init();
 
@@ -88,7 +89,6 @@ void Engine::run(void) {
 	fps_mStarted = false;
 
 	while (running) {
-
 		cap_mStarted = true;
 		cap_mPaused = false;
 		cap_mStartTicks = SDL_GetTicks();
