@@ -16,7 +16,7 @@
 #include "scenes/Dialogue.h"
 #include "scenes/Saving.h"
 
-class Save : public Scene {
+class Save: public Scene {
 private:
 	Texture background;
 	std::vector <Savedata> data;
@@ -37,6 +37,8 @@ public:
 	void update(void);
 
 	void render(void);
+
+	void refresh(int specific = 0);
 
 };
 

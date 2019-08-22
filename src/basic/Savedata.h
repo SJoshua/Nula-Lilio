@@ -8,6 +8,9 @@
 #include <string>
 #include <ctime>
 #include <SDL.h>
+#include <SDL_image.h>
+
+#include "basic/Resource_Manager.h"
 
 class Savedata {
 public:
@@ -20,9 +23,9 @@ public:
 
 	Savedata(std::string tag, std::string text, unsigned int pos, SDL_Texture* pic, time_t timestamp);
 
-	std::string Serialize(void);
+	std::string serialize(void);
 
-	void Unserialize(std::string);
+	void unserialize(std::string);
 
 	void write(int stock);
 

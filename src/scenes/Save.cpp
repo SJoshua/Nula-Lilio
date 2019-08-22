@@ -16,26 +16,46 @@ Save::Save(Savedata state) : state(state) {
 		resources.text("<Back>", resources.font(DEFAULT_FONT, 40)));
 
 	data.resize(10);
-
-	for (int i = 1; i <= 9; i++) {
-		data[i].read(i);
-		if (data[i].pic == nullptr) {
-			data[i].pic = resources.picture("save_1.jpg");
-		}
-	}
-
 	buttons.resize(10);
 
-	for (int x = 0; x < 3; x++) {
-		for (int y = 0; y < 3; y++) {
-			int i = 3 * x + y + 1;
-			buttons[i] = Button(
-				WINDOW_WIDTH * (85 + x * 290) / 1000, WINDOW_HEIGHT * (6 + y * 28) / 100,
-				data[i].pic, nullptr);
-		}
-	}
+	refresh();
 
 	background = Texture(0, 0, resources.picture("photo_2.jpg"));
+}
+
+void Save::refresh(int specific) {
+
+	if (specific) {
+		data[specific].read(specific);
+
+		if (data[specific].pic == nullptr) {
+			data[specific].pic = resources.picture("save_1.jpg");
+		}
+
+		int x = (specific - 1) / 3;
+		int y = (specific - 1) % 3;
+
+		buttons[specific] = Button(
+			WINDOW_WIDTH * (85 + x * 290) / 1000, WINDOW_HEIGHT * (6 + y * 28) / 100,
+			data[specific].pic, nullptr);
+
+	} else {
+		for (int i = 1; i <= 9; i++) {
+			data[i].read(i);
+			if (data[i].pic == nullptr) {
+				data[i].pic = resources.picture("save_1.jpg");
+			}
+		}
+
+		for (int x = 0; x < 3; x++) {
+			for (int y = 0; y < 3; y++) {
+				int i = 3 * x + y + 1;
+				buttons[i] = Button(
+					WINDOW_WIDTH * (85 + x * 290) / 1000, WINDOW_HEIGHT * (6 + y * 28) / 100,
+					data[i].pic, nullptr);
+			}
+		}
+	}
 }
 
 void Save::process(void) {
@@ -46,10 +66,8 @@ void Save::process(void) {
 		data[current] = state;
 		int x = (current - 1) / 3;
 		int y = (current - 1) % 3;
-		buttons[current] = Button(
-			WINDOW_WIDTH * (85 + x * 290) / 1000, WINDOW_HEIGHT * (6 + y * 28) / 100,
-			data[current].pic, nullptr);
 		state.write(current);
+		refresh();
 	}
 	current = 10;
 }
