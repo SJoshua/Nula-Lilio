@@ -4,14 +4,17 @@ extern SceneManager scenes;
 extern ResourceManager resources;
 extern SDL_Renderer* renderer;
 
-const int Gap = WINDOW_HEIGHT * 9 / 640;
-const int Rect_width = (WINDOW_WIDTH * 9 / 10 - 4 * Gap) / 3;
-const int Rect_height = (WINDOW_HEIGHT * 9 / 10 - 4 * Gap) / 3;
-const int X0 = WINDOW_WIDTH * 5 / 100 + Gap;
-const int Y0 = WINDOW_HEIGHT * 5 / 100 + Gap;
+const int Gap = WINDOW_HEIGHT / 72;
+const int Load_X = Gap;
+const int Load_width = WINDOW_WIDTH / 2 - 2 * Gap;
+const int Load_height = (WINDOW_HEIGHT - 10 * Gap) / 9;
+const int pic_width = WINDOW_WIDTH * 45 / 100;
+const int pic_height = WINDOW_HEIGHT * 45 / 100;
+const int pic_X = WINDOW_WIDTH / 2 + Gap * 3;
+const int pic_Y = (WINDOW_HEIGHT - pic_height) / 2;
 
 Save::Save(Savedata state) : state(state) {
-	backBtn = Button(WINDOW_WIDTH / 10 * 8, WINDOW_HEIGHT / 100 * 94,
+	backBtn = Button(WINDOW_WIDTH / 100 * 80, WINDOW_HEIGHT / 100 * 94,
 		resources.text(" Back ", resources.font(DEFAULT_FONT, 40)),
 		resources.text("<Back>", resources.font(DEFAULT_FONT, 40)));
 
@@ -29,31 +32,27 @@ void Save::refresh(int specific) {
 		data[specific].read(specific);
 
 		if (data[specific].pic == nullptr) {
-			data[specific].pic = resources.picture("save_1.jpg");
+			buttons[specific] = Button(
+				Load_X, Gap * specific + Load_height * (specific - 1),
+				resources.picture("test.png"), nullptr);
+		} else {
+			buttons[specific] = Button(
+				Load_X, Gap * specific + Load_height * (specific - 1),
+				data[specific].pic, nullptr);
 		}
-
-		int x = (specific - 1) / 3;
-		int y = (specific - 1) % 3;
-
-		buttons[specific] = Button(
-			WINDOW_WIDTH * (85 + x * 290) / 1000, WINDOW_HEIGHT * (6 + y * 28) / 100,
-			data[specific].pic, nullptr);
 
 	} else {
 		for (int i = 1; i <= 9; i++) {
 			data[i].read(i);
 			if (data[i].pic == nullptr) {
-				data[i].pic = resources.picture("save_1.jpg");
+				data[i].pic = resources.picture("test.png");
 			}
 		}
 
-		for (int x = 0; x < 3; x++) {
-			for (int y = 0; y < 3; y++) {
-				int i = 3 * x + y + 1;
-				buttons[i] = Button(
-					WINDOW_WIDTH * (85 + x * 290) / 1000, WINDOW_HEIGHT * (6 + y * 28) / 100,
-					data[i].pic, nullptr);
-			}
+		for (int i = 1; i <= 9; i++) {
+			buttons[i] = Button(
+				WINDOW_WIDTH / 2 + Gap, Gap * specific + Load_height * (specific - 1),
+				data[specific].pic, nullptr);
 		}
 	}
 }
@@ -64,8 +63,6 @@ void Save::process(void) {
 		return;
 	} else if (current <= 9) {
 		data[current] = state;
-		int x = (current - 1) / 3;
-		int y = (current - 1) % 3;
 		state.write(current);
 		refresh();
 	}
@@ -105,22 +102,21 @@ void Save::render(void) {
 
 	// Box
 	SDL_Rect rect_1 = {
-		WINDOW_WIDTH * 3 / 100, WINDOW_HEIGHT * 3 / 100,
-		WINDOW_WIDTH * 94 / 100, WINDOW_HEIGHT * 90 / 100
+		pic_X, pic_Y,
+		pic_width, pic_height
 	};
 	SDL_SetRenderDrawColor(renderer, 0, 255, 255, 0xEF);
 	SDL_RenderFillRect(renderer, &rect_1);
+	
 
 	// Sub boxes
-	for (int x = 0; x < 3; x++) {
-		for (int y = 0; y < 3; y++) {
-			SDL_Rect rect = {
-				WINDOW_WIDTH * (85 + x * 290) / 1000, WINDOW_HEIGHT * (6 + y * 28) / 100,
-				WINDOW_WIDTH * 25 / 100, WINDOW_HEIGHT * 25 / 100
-			};
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
-			SDL_RenderDrawRect(renderer, &rect);
-		}
+	for (int i = 1; i <= 9; i++) {
+		SDL_Rect rect = {
+			Load_X, Gap * i + Load_height * (i - 1),
+			Load_width, Load_height
+		};
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+		SDL_RenderDrawRect(renderer, &rect);
 	}
 
 	// Buttons

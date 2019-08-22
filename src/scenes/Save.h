@@ -18,7 +18,7 @@
 
 class Save: public Scene {
 private:
-	Texture background;
+	Texture background , pic;
 	std::vector <Savedata> data;
 	std::vector <Button> buttons;
 	Savedata state;
