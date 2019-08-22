@@ -4,7 +4,7 @@ extern SceneManager scenes;
 extern ResourceManager resources;
 extern SDL_Renderer* renderer;
 
-const int Gap = WINDOW_HEIGHT / 72;
+const int Gap = WINDOW_HEIGHT * 2 / 100;
 const int Load_X = Gap;
 const int Load_width = WINDOW_WIDTH / 2 - 2 * Gap;
 const int Load_height = (WINDOW_HEIGHT - 10 * Gap) / 9;
@@ -14,45 +14,38 @@ const int pic_X = WINDOW_WIDTH / 2 + Gap * 3;
 const int pic_Y = (WINDOW_HEIGHT - pic_height) / 2;
 
 Save::Save(Savedata state) : state(state) {
-	backBtn = Button(WINDOW_WIDTH / 100 * 80, WINDOW_HEIGHT / 100 * 94,
-		resources.text(" Back ", resources.font(DEFAULT_FONT, 40)),
-		resources.text("<Back>", resources.font(DEFAULT_FONT, 40)));
+	background = Texture(0, 0, resources.picture("blackboard.png"));
+
+	title = Texture(0, 0, resources.text("Nula Lilio Savedata", resources.font(DEFAULT_FONT, 60)));
+	saveLabel = Texture(WINDOW_WIDTH * 78 / 100, WINDOW_HEIGHT * 10 / 100, resources.text("- Save -", resources.font(DEFAULT_FONT, 40), {0xFF, 0xFF, 0xFF}));
+
+	backBtn = Button(WINDOW_WIDTH * 80 / 100, WINDOW_HEIGHT * 85 / 100,
+		resources.text(" Back ", resources.font(DEFAULT_FONT, 40), { 0xFF, 0xFF, 0x9F }),
+		resources.text("<Back>", resources.font(DEFAULT_FONT, 40), { 0xFF, 0xFF, 0x9F }));
 
 	data.resize(10);
 	buttons.resize(10);
 
 	refresh();
-
-	background = Texture(0, 0, resources.picture("photo_2.jpg"));
 }
 
 void Save::refresh(int specific) {
-
 	if (specific) {
 		data[specific].read(specific);
 
-		if (data[specific].pic == nullptr) {
-			buttons[specific] = Button(
-				Load_X, Gap * specific + Load_height * (specific - 1),
-				resources.picture("test.png"), nullptr);
-		} else {
-			buttons[specific] = Button(
-				Load_X, Gap * specific + Load_height * (specific - 1),
-				data[specific].pic, nullptr);
-		}
+		buttons[specific] = Button(WINDOW_WIDTH * 5 / 100, WINDOW_HEIGHT * 145 / 1000 + WINDOW_HEIGHT * 8 * (specific - 1) / 100,
+			resources.picture("white", WINDOW_WIDTH * 35 / 100, WINDOW_HEIGHT * 7 / 100),
+			resources.text(data[specific].getTime(), resources.font(DEFAULT_FONT, 22)));
 
 	} else {
 		for (int i = 1; i <= 9; i++) {
 			data[i].read(i);
-			if (data[i].pic == nullptr) {
-				data[i].pic = resources.picture("test.png");
-			}
 		}
 
 		for (int i = 1; i <= 9; i++) {
-			buttons[i] = Button(
-				WINDOW_WIDTH / 2 + Gap, Gap * specific + Load_height * (specific - 1),
-				data[specific].pic, nullptr);
+			buttons[i] = Button(WINDOW_WIDTH * 5 / 100, WINDOW_HEIGHT * 145 / 1000 + WINDOW_HEIGHT * 8 * (i - 1) / 100,
+				resources.picture("white", WINDOW_WIDTH * 35 / 100, WINDOW_HEIGHT * 7 / 100),
+				resources.text(data[i].getTime(), resources.font(DEFAULT_FONT, 22)));
 		}
 	}
 }
@@ -64,9 +57,8 @@ void Save::process(void) {
 	} else if (current <= 9) {
 		data[current] = state;
 		state.write(current);
-		refresh();
+		refresh(current);
 	}
-	current = 10;
 }
 
 bool Save::onMouseMove(int x, int y) {
@@ -81,6 +73,7 @@ bool Save::onMouseMove(int x, int y) {
 			}
 		}
 	}
+	current = 10;
 	return false;
 }
 
@@ -95,26 +88,37 @@ void Save::update(void) {
 
 void Save::render(void) {
 	// Background
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	SDL_RenderClear(renderer);
-	//SDL_RenderCopy(renderer, background.getTexture(), nullptr, background.getRect());
+	SDL_RenderCopy(renderer, background.getTexture(), nullptr, background.getRect());
+
+	// Label
+	SDL_RenderCopy(renderer, saveLabel.getTexture(), nullptr, saveLabel.getRect());
 
 	// Box
-	SDL_Rect rect_1 = {
-		pic_X, pic_Y,
-		pic_width, pic_height
-	};
-	SDL_SetRenderDrawColor(renderer, 0, 255, 255, 0xEF);
-	SDL_RenderFillRect(renderer, &rect_1);
-	
+	SDL_Rect rectScr = { WINDOW_WIDTH / 2 - 100, WINDOW_HEIGHT / 4, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 };
+	SDL_Rect rectText = { rectScr.x + (rectScr.w - title.getRect()->w) / 2, rectScr.y + (rectScr.h - title.getRect()->h) / 2, title.getRect()->w, title.getRect()->h };
+	if (current < 1 || current > 9 || !data[current].pic) {
+		SDL_SetRenderDrawColor(renderer, 0xDF, 0xFF, 0xFF, 0xAF);
+		SDL_RenderFillRect(renderer, &rectScr);
+		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+		SDL_RenderDrawRect(renderer, &rectScr);
+		SDL_RenderCopy(renderer, title.getTexture(), nullptr, &rectText);
+	}
 
 	// Sub boxes
 	for (int i = 1; i <= 9; i++) {
 		SDL_Rect rect = {
-			Load_X, Gap * i + Load_height * (i - 1),
-			Load_width, Load_height
+			WINDOW_WIDTH * 5 / 100, WINDOW_HEIGHT * 145 / 1000 + WINDOW_HEIGHT * 8 * (i - 1) / 100,
+			WINDOW_WIDTH * 35 / 100, WINDOW_HEIGHT * 7 / 100
 		};
+		if (current == i) {
+			if (data[current].pic) {
+				SDL_RenderCopy(renderer, data[current].pic, nullptr, &rectScr);
+			}
+			SDL_SetRenderDrawColor(renderer, 0xFF, 0xEF, 0xFF, 0xAF);
+		} else {
+			SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xAF, 0xAF);
+		}
+		SDL_RenderFillRect(renderer, &rect);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
 		SDL_RenderDrawRect(renderer, &rect);
 	}
@@ -122,79 +126,12 @@ void Save::render(void) {
 	// Buttons
 	SDL_RenderCopy(renderer, current == 0 ? backBtn.getActive() : backBtn.getNormal(), nullptr, backBtn.getRect());
 	for (int i = 1; i <= 9; i++) {
-		SDL_RenderCopy(renderer, buttons[i].getNormal(), nullptr, buttons[i].getRect());
+		SDL_Rect* tmp = Texture(0, 0, buttons[i].getActive()).getRect();
+		SDL_Rect rect = {
+			WINDOW_WIDTH * 5 / 100 + (WINDOW_WIDTH * 35 / 100 - tmp->w) / 2,
+			WINDOW_HEIGHT * 145 / 1000 + WINDOW_HEIGHT * 8 * (i - 1) / 100 + (WINDOW_HEIGHT * 7 / 100 - tmp->h) / 2,
+			tmp->w, tmp->h
+		};
+		SDL_RenderCopy(renderer, buttons[i].getActive(), nullptr, &rect);
 	}
-	//SDL_Rect Save_1 = { X0, Y0, Rect_width, Rect_height };
-	//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	//SDL_RenderFillRect(renderer, &Save_1);
-	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	//SDL_RenderDrawRect(renderer, &Save_1);
-
-	//SDL_Rect Save_2 = { X0 + Gap + Rect_width, Y0, Rect_width, Rect_height };
-	//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	//SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	//SDL_RenderFillRect(renderer, &Save_2);
-	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	//SDL_RenderDrawRect(renderer, &Save_2);
-
-	//SDL_Rect Save_3 = { X0 + Gap * 2 + Rect_width * 2, Y0, Rect_width, Rect_height };
-	//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	//SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	//SDL_RenderFillRect(renderer, &Save_3);
-	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	//SDL_RenderDrawRect(renderer, &Save_3);
-
-	//SDL_Rect Save_4 = { X0, Y0 + Gap + Rect_height, Rect_width, Rect_height };
-	//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	//SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	//SDL_RenderFillRect(renderer, &Save_4);
-	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	//SDL_RenderDrawRect(renderer, &Save_4);
-
-	//SDL_Rect Save_5 = { X0 + Gap + Rect_width, Y0 + Gap + Rect_height, Rect_width, Rect_height };
-	//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	//SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	//SDL_RenderFillRect(renderer, &Save_5);
-	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	//SDL_RenderDrawRect(renderer, &Save_5);
-
-	//SDL_Rect Save_6 = { X0 + Gap * 2 + Rect_width * 2, Y0 + Gap + Rect_height, Rect_width, Rect_height };
-	//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	//SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	//SDL_RenderFillRect(renderer, &Save_6);
-	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	//SDL_RenderDrawRect(renderer, &Save_6);
-
-	//SDL_Rect Save_7 = { X0, Y0 + Gap * 2 + Rect_height * 2, Rect_width, Rect_height };
-	//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	//SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	//SDL_RenderFillRect(renderer, &Save_7);
-	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	//SDL_RenderDrawRect(renderer, &Save_7);
-
-	//SDL_Rect Save_8 = { X0 + Gap + Rect_width, Y0 + Gap * 2 + Rect_height * 2, Rect_width, Rect_height };
-	//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	//SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	//SDL_RenderFillRect(renderer, &Save_8);
-	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	//SDL_RenderDrawRect(renderer, &Save_8);
-
-	//SDL_Rect Save_9 = { X0 + Gap * 2 + Rect_width * 2, Y0 + Gap * 2 + Rect_height * 2, Rect_width, Rect_height };
-	//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	//SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	//SDL_RenderFillRect(renderer, &Save_9);
-	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	//SDL_RenderDrawRect(renderer, &Save_9);
-
-	//// Buttons
-	//SDL_RenderCopy(renderer, current == 0 ? returnBtn.getActive() : returnBtn.getNormal(), nullptr, returnBtn.getRect());
-	//SDL_RenderCopy(renderer, current == 1 ? Save_1Btn.getActive() : Save_1Btn.getNormal(), nullptr, Save_1Btn.getRect());
-	//SDL_RenderCopy(renderer, current == 2 ? Save_2Btn.getActive() : Save_2Btn.getNormal(), nullptr, Save_2Btn.getRect());
-	//SDL_RenderCopy(renderer, current == 3 ? Save_3Btn.getActive() : Save_3Btn.getNormal(), nullptr, Save_3Btn.getRect());
-	//SDL_RenderCopy(renderer, current == 4 ? Save_4Btn.getActive() : Save_4Btn.getNormal(), nullptr, Save_4Btn.getRect());
-	//SDL_RenderCopy(renderer, current == 5 ? Save_5Btn.getActive() : Save_5Btn.getNormal(), nullptr, Save_5Btn.getRect());
-	//SDL_RenderCopy(renderer, current == 6 ? Save_6Btn.getActive() : Save_6Btn.getNormal(), nullptr, Save_6Btn.getRect());
-	//SDL_RenderCopy(renderer, current == 7 ? Save_7Btn.getActive() : Save_7Btn.getNormal(), nullptr, Save_7Btn.getRect());
-	//SDL_RenderCopy(renderer, current == 8 ? Save_8Btn.getActive() : Save_8Btn.getNormal(), nullptr, Save_8Btn.getRect());
-	//SDL_RenderCopy(renderer, current == 9 ? Save_9Btn.getActive() : Save_9Btn.getNormal(), nullptr, Save_9Btn.getRect());
 }

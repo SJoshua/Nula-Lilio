@@ -29,13 +29,13 @@ Dialogue::Dialogue(std::string filename, int pos) {
 
 SDL_Texture* Dialogue::takeScreenshot(void) {
 	SDL_Texture *screenshot = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
-	SDL_Texture *ret = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 4);
+	SDL_Texture *ret = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
 	SDL_SetRenderTarget(renderer, screenshot);
 	render();
 	
 	SDL_SetRenderTarget(renderer, ret);
-	SDL_Rect rect = { 0, 0, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 4 };
+	SDL_Rect rect = { 0, 0, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 };
 	SDL_RenderCopy(renderer, screenshot, nullptr, &rect);
 
 	SDL_SetRenderTarget(renderer, nullptr);

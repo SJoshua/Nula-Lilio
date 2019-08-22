@@ -15,18 +15,22 @@ Savedata::Savedata(std::string tag, std::string text, unsigned int pos, SDL_Text
 
 std::string Savedata::serialize(void) {
 	std::ostringstream buffer;
-	buffer << tag << std::endl
-		   << pos << std::endl
+	buffer << tag << " "
+		   << (pos - 1) << " "
 		   << timestamp << std::endl;
 	return buffer.str();
 }
 
 std::string Savedata::getTime(void) {
-	char buf[128] = { 0 };
-	tm* local;
-	local = localtime(&timestamp);
-	strftime(buf, 64, "%Y-%m-%d %H:%M:%S", local);
-	return buf;
+	if (timestamp) {
+		char buf[128] = { 0 };
+		tm* local = nullptr;
+		local = localtime(&timestamp);
+		strftime(buf, 64, "%Y-%m-%d %H:%M:%S", local);
+		return buf;
+	} else {
+		return "- NONE -";
+	}
 }
 
 void Savedata::unserialize(std::string str) {
@@ -42,6 +46,7 @@ void Savedata::write(int stock) {
 	std::string filename = buffer.str();
 	std::ofstream os(filename + ".sav", std::ios::binary);
 	os << serialize();
+	os.close();
 
 	// Save Screenshot
 	int width, height;
@@ -61,10 +66,11 @@ void Savedata::read(int stock) {
 	std::ifstream is(filename + ".sav", std::ios::binary);
 	if (is) {
 		std::string data;
-		is >> data;
+		std::getline(is, data);
 		if (!data.empty()) {
 			unserialize(data);
-			pic = resources.picture("../../" + filename + ".png", true);
+			pic = resources.picture("../../" + filename + ".png", 0, 0, true);
 		}
+		is.close();
 	}
 }

@@ -3,6 +3,7 @@
 
 #include <deque>
 #include <SDL.h>
+#include <memory>
 
 #include "basic/Scene.h"
 

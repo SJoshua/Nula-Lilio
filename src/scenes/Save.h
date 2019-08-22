@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <vector>
+#include <memory>
 #include <SDL.h>
 
 #include "basic/Savedata.h"
@@ -18,7 +19,7 @@
 
 class Save: public Scene {
 private:
-	Texture background , pic;
+	Texture background, title, saveLabel;
 	std::vector <Savedata> data;
 	std::vector <Button> buttons;
 	Savedata state;

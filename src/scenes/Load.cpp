@@ -4,94 +4,65 @@ extern SceneManager scenes;
 extern ResourceManager resources;
 extern SDL_Renderer* renderer;
 
-const int Gap = WINDOW_HEIGHT * 9 / 640;
-const int Rect_width = (WINDOW_WIDTH * 9 / 10 - 4 * Gap) / 3;
-const int Rect_height = (WINDOW_HEIGHT * 9 / 10 - 4 * Gap) / 3;
-const int X0 = WINDOW_WIDTH * 5 / 100 + Gap;
-const int Y0 = WINDOW_HEIGHT * 5 / 100 + Gap;
+const int Gap = WINDOW_HEIGHT * 2 / 100;
+const int Load_X = Gap;
+const int Load_width = WINDOW_WIDTH / 2 - 2 * Gap;
+const int Load_height = (WINDOW_HEIGHT - 10 * Gap) / 9;
+const int pic_width = WINDOW_WIDTH * 45 / 100;
+const int pic_height = WINDOW_HEIGHT * 45 / 100;
+const int pic_X = WINDOW_WIDTH / 2 + Gap * 3;
+const int pic_Y = (WINDOW_HEIGHT - pic_height) / 2;
 
 Load::Load(void) {
-	returnBtn = Button(WINDOW_WIDTH / 10 * 8, WINDOW_HEIGHT / 100 * 94,
-		resources.text(" Return ", resources.font(DEFAULT_FONT, 40)),
-		resources.text("<Return>", resources.font(DEFAULT_FONT, 40))
-	);
+	background = Texture(0, 0, resources.picture("blackboard.png"));
 
-	Load_1Btn = Button(X0 + 5, Y0 + 5, resources.picture("load_1.jpg"), resources.picture("load_2.png"));
-	Load_2Btn = Button(X0 + Gap + Rect_width + 5, Y0 + 5, resources.picture("load_1.jpg"), resources.picture("load_2.png"));
-	Load_3Btn = Button(X0 + Gap * 2 + Rect_width * 2 + 5, Y0 + 5, resources.picture("load_1.jpg"), resources.picture("load_2.png"));
-	Load_4Btn = Button(X0 + 5, Y0 + Gap + Rect_height + 5, resources.picture("load_1.jpg"), resources.picture("load_2.png"));
-	Load_5Btn = Button(X0 + Gap + Rect_width + 5, Y0 + Gap + Rect_height + 5, resources.picture("load_1.jpg"), resources.picture("load_2.png"));
-	Load_6Btn = Button(X0 + Gap * 2 + Rect_width * 2 + 5, Y0 + Gap + Rect_height + 5, resources.picture("load_1.jpg"), resources.picture("load_2.png"));
-	Load_7Btn = Button(X0 + 5, Y0 + Gap * 2 + Rect_height * 2 + 5, resources.picture("load_1.jpg"), resources.picture("load_2.png"));
-	Load_8Btn = Button(X0 + Gap + Rect_width + 5, Y0 + Gap * 2 + Rect_height * 2 + 5, resources.picture("load_1.jpg"), resources.picture("load_2.png"));
-	Load_9Btn = Button(X0 + Gap * 2 + Rect_width * 2 + 5, Y0 + Gap * 2 + Rect_height * 2 + 5, resources.picture("load_1.jpg"), resources.picture("load_2.png"));
+	title = Texture(0, 0, resources.text("Nula Lilio Savedata", resources.font(DEFAULT_FONT, 60)));
+	loadLabel = Texture(WINDOW_WIDTH * 78 / 100, WINDOW_HEIGHT * 10 / 100, resources.text("- Load -", resources.font(DEFAULT_FONT, 40), { 0xFF, 0xFF, 0xFF }));
+
+	backBtn = Button(WINDOW_WIDTH * 80 / 100, WINDOW_HEIGHT * 85 / 100,
+		resources.text(" Back ", resources.font(DEFAULT_FONT, 40), { 0xFF, 0xFF, 0x9F }),
+		resources.text("<Back>", resources.font(DEFAULT_FONT, 40), { 0xFF, 0xFF, 0x9F }));
 
 	data.resize(10);
-	background = Texture(0, 0, resources.picture("load_3.jpg"));
-	std::string sav = "00.sav", pic = "00.png";
+	buttons.resize(10);
+
 	for (int i = 1; i <= 9; i++) {
-		pic[1] = sav[1] = '0' + i;
-		std::fstream fs(sav);
-		if (!fs) {
-			continue;
-		}
-		fs >> data[i].tag >> data[i].pos;
-		data[i].pic = resources.picture(pic);
+		data[i].read(i);
+	}
+
+	for (int i = 1; i <= 9; i++) {
+		buttons[i] = Button(WINDOW_WIDTH * 5 / 100, WINDOW_HEIGHT * 145 / 1000 + WINDOW_HEIGHT * 8 * (i - 1) / 100,
+			resources.picture("white", WINDOW_WIDTH * 35 / 100, WINDOW_HEIGHT * 7 / 100),
+			resources.text(data[i].getTime(), resources.font(DEFAULT_FONT, 22)));
 	}
 }
 
 void Load::process(void) {
-	switch (current)
-	{
-	case 0:scenes.pop();
-		break;
-	case 1:scenes.push(new Loading);
-		break;
-	case 2:scenes.push(new Loading);
-		break;
-	case 3:scenes.push(new Loading);
-		break;
-	case 4:scenes.push(new Loading);
-		break;
-	case 5:scenes.push(new Loading);
-		break;
-	case 6:scenes.push(new Loading);
-		break;
-	case 7:scenes.push(new Loading);
-		break;
-	case 8:scenes.push(new Loading);
-		break;
-	case 9:scenes.push(new Loading);
-		break;
+	if (current == 0) {
+		scenes.pop();
+		return;
+	} else if (current <= 9) {
+		if (data[current].pic) {
+			scenes.pop();
+			scenes.jump(new Dialogue(data[current].tag, data[current].pos));
+		}
 	}
-	current = 10;
 }
 
 bool Load::onMouseMove(int x, int y) {
-	if (returnBtn.isInside(x, y)) {
+	if (backBtn.isInside(x, y)) {
 		current = 0;
-	}else if (Load_1Btn.isInside(x, y)) {
-		current = 1;
-	}else if (Load_2Btn.isInside(x, y)) {
-		current = 2;
-	}else if (Load_3Btn.isInside(x, y)) {
-		current = 3;
-	}else if (Load_4Btn.isInside(x, y)) {
-		current = 4;
-	}else if (Load_5Btn.isInside(x, y)) {
-		current = 5;
-	}else if (Load_6Btn.isInside(x, y)) {
-		current = 6;
-	}else if (Load_7Btn.isInside(x, y)) {
-		current = 7;
-	}else if (Load_8Btn.isInside(x, y)) {
-		current = 8;
-	}else if (Load_9Btn.isInside(x, y)) {
-		current = 9;
-	}else {
-		return false;
+		return true;
+	} else {
+		for (int i = 1; i <= 9; i++) {
+			if (buttons[i].isInside(x, y)) {
+				current = i;
+				return true;
+			}
+		}
 	}
-	return true;
+	current = 10;
+	return false;
 }
 
 void Load::onMouseDown(int x, int y) {
@@ -101,87 +72,54 @@ void Load::onMouseDown(int x, int y) {
 }
 
 void Load::update(void) {
-	
 }
 
 void Load::render(void) {
 	// Background
 	SDL_RenderCopy(renderer, background.getTexture(), nullptr, background.getRect());
 
-	// Load Box
-	SDL_Rect Load_1 = { X0, Y0, Rect_width, Rect_height };
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_RenderFillRect(renderer, &Load_1);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	SDL_RenderDrawRect(renderer, &Load_1);
+	// Label
+	SDL_RenderCopy(renderer, loadLabel.getTexture(), nullptr, loadLabel.getRect());
 
-	SDL_Rect Load_2 = { X0 + Gap + Rect_width, Y0, Rect_width, Rect_height };
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_RenderFillRect(renderer, &Load_2);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	SDL_RenderDrawRect(renderer, &Load_2);
+	// Box
+	SDL_Rect rectScr = { WINDOW_WIDTH / 2 - 100, WINDOW_HEIGHT / 4, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 };
+	SDL_Rect rectText = { rectScr.x + (rectScr.w - title.getRect()->w) / 2, rectScr.y + (rectScr.h - title.getRect()->h) / 2, title.getRect()->w, title.getRect()->h };
+	if (current < 1 || current > 9 || !data[current].pic) {
+		SDL_SetRenderDrawColor(renderer, 0xDF, 0xFF, 0xFF, 0xAF);
+		SDL_RenderFillRect(renderer, &rectScr);
+		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+		SDL_RenderDrawRect(renderer, &rectScr);
+		SDL_RenderCopy(renderer, title.getTexture(), nullptr, &rectText);
+	}
 
-	SDL_Rect Load_3 = { X0 + Gap * 2 + Rect_width * 2, Y0, Rect_width, Rect_height };
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_RenderFillRect(renderer, &Load_3);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	SDL_RenderDrawRect(renderer, &Load_3);
-
-	SDL_Rect Load_4 = { X0, Y0 + Gap + Rect_height, Rect_width, Rect_height };
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_RenderFillRect(renderer, &Load_4);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	SDL_RenderDrawRect(renderer, &Load_4);
-
-	SDL_Rect Load_5 = { X0 + Gap + Rect_width, Y0 + Gap + Rect_height, Rect_width, Rect_height };
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_RenderFillRect(renderer, &Load_5);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	SDL_RenderDrawRect(renderer, &Load_5);
-
-	SDL_Rect Load_6 = { X0 + Gap * 2 + Rect_width * 2, Y0 + Gap + Rect_height, Rect_width, Rect_height };
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_RenderFillRect(renderer, &Load_6);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	SDL_RenderDrawRect(renderer, &Load_6);
-
-	SDL_Rect Load_7 = { X0, Y0 + Gap * 2 + Rect_height * 2, Rect_width, Rect_height };
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_RenderFillRect(renderer, &Load_7);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	SDL_RenderDrawRect(renderer, &Load_7);
-
-	SDL_Rect Load_8 = { X0 + Gap + Rect_width, Y0 + Gap * 2 + Rect_height * 2, Rect_width, Rect_height };
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_RenderFillRect(renderer, &Load_8);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	SDL_RenderDrawRect(renderer, &Load_8);
-
-	SDL_Rect Load_9 = { X0 + Gap * 2 + Rect_width * 2, Y0 + Gap * 2 + Rect_height * 2, Rect_width, Rect_height };
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0xEF);
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_RenderFillRect(renderer, &Load_9);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xEF);
-	SDL_RenderDrawRect(renderer, &Load_9);
+	// Sub boxes
+	for (int i = 1; i <= 9; i++) {
+		SDL_Rect rect = {
+			WINDOW_WIDTH * 5 / 100, WINDOW_HEIGHT * 145 / 1000 + WINDOW_HEIGHT * 8 * (i - 1) / 100,
+			WINDOW_WIDTH * 35 / 100, WINDOW_HEIGHT * 7 / 100
+		};
+		if (current == i && data[current].timestamp) {
+			if (data[current].pic) {
+				SDL_RenderCopy(renderer, data[current].pic, nullptr, &rectScr);
+			}
+			SDL_SetRenderDrawColor(renderer, 0xFF, 0xEF, 0xFF, 0xAF);
+		} else {
+			SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xAF, 0xAF);
+		}
+		SDL_RenderFillRect(renderer, &rect);
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+		SDL_RenderDrawRect(renderer, &rect);
+	}
 
 	// Buttons
-	SDL_RenderCopy(renderer, current == 0 ? returnBtn.getActive() : returnBtn.getNormal(), nullptr, returnBtn.getRect());
-	SDL_RenderCopy(renderer, current == 1 ? Load_1Btn.getActive() : Load_1Btn.getNormal(), nullptr, Load_1Btn.getRect());
-	SDL_RenderCopy(renderer, current == 2 ? Load_2Btn.getActive() : Load_2Btn.getNormal(), nullptr, Load_2Btn.getRect());
-	SDL_RenderCopy(renderer, current == 3 ? Load_3Btn.getActive() : Load_3Btn.getNormal(), nullptr, Load_3Btn.getRect());
-	SDL_RenderCopy(renderer, current == 4 ? Load_4Btn.getActive() : Load_4Btn.getNormal(), nullptr, Load_4Btn.getRect());
-	SDL_RenderCopy(renderer, current == 5 ? Load_5Btn.getActive() : Load_5Btn.getNormal(), nullptr, Load_5Btn.getRect());
-	SDL_RenderCopy(renderer, current == 6 ? Load_6Btn.getActive() : Load_6Btn.getNormal(), nullptr, Load_6Btn.getRect());
-	SDL_RenderCopy(renderer, current == 7 ? Load_7Btn.getActive() : Load_7Btn.getNormal(), nullptr, Load_7Btn.getRect());
-	SDL_RenderCopy(renderer, current == 8 ? Load_8Btn.getActive() : Load_8Btn.getNormal(), nullptr, Load_8Btn.getRect());
-	SDL_RenderCopy(renderer, current == 9 ? Load_9Btn.getActive() : Load_9Btn.getNormal(), nullptr, Load_9Btn.getRect());
-
+	SDL_RenderCopy(renderer, current == 0 ? backBtn.getActive() : backBtn.getNormal(), nullptr, backBtn.getRect());
+	for (int i = 1; i <= 9; i++) {
+		SDL_Rect* tmp = Texture(0, 0, buttons[i].getActive()).getRect();
+		SDL_Rect rect = {
+			WINDOW_WIDTH * 5 / 100 + (WINDOW_WIDTH * 35 / 100 - tmp->w) / 2,
+			WINDOW_HEIGHT * 145 / 1000 + WINDOW_HEIGHT * 8 * (i - 1) / 100 + (WINDOW_HEIGHT * 7 / 100 - tmp->h) / 2,
+			tmp->w, tmp->h
+		};
+		SDL_RenderCopy(renderer, buttons[i].getActive(), nullptr, &rect);
+	}
 }
