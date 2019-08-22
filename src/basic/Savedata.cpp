@@ -2,7 +2,7 @@
 
 Savedata::Savedata(void) {
 	tag = "{NULL}";
-	text = "PNULL";
+	text = "{NULL}";
 	pic = nullptr;
 	pos = 0;
 	timestamp = 0;
@@ -20,7 +20,7 @@ void Savedata::Unserialize(std::string) {
 
 void Savedata::write(int stock) {
 	std::ostringstream buffer;
-	buffer << "save" << std::setw(2) << std::setfill('0') << stock << ".sav";
+	buffer << "savedata/save" << std::setw(2) << std::setfill('0') << stock << ".sav";
 	std::string filename = buffer.str();
 	std::ofstream os(filename, std::ios::binary);
 	os << Serialize();
@@ -28,10 +28,12 @@ void Savedata::write(int stock) {
 
 void Savedata::read(int stock) {
 	std::ostringstream buffer;
-	buffer << "save" << std::setw(2) << std::setfill('0') << stock << ".sav";
+	buffer << "savedata/save" << std::setw(2) << std::setfill('0') << stock << ".sav";
 	std::string filename = buffer.str();
 	std::ifstream is(filename, std::ios::binary);
-	std::string data;
-	is >> data;
-	Unserialize(data);
+	if (is) {
+		std::string data;
+		is >> data;
+		Unserialize(data);
+	}
 }

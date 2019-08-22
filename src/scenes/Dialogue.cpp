@@ -132,7 +132,11 @@ void Dialogue::onMouseDown(int x, int y) {
 	if (onMouseMove(x, y)) {
 		processButtons();
 	} else {
-		processScript();
+		if (speed > 0) {
+			speed = 0;
+		} else {
+			processScript();
+		}
 	}
 }
 
@@ -165,11 +169,14 @@ void Dialogue::render(void) {
 
 	// Name
 	if (showName) {
-		SDL_Rect rect2 = { WINDOW_WIDTH * 11 / 100, WINDOW_HEIGHT * 63 / 100, WINDOW_WIDTH * 10 / 100, WINDOW_HEIGHT * 6 / 100 };
+		SDL_Rect rect2 = { WINDOW_WIDTH * 11 / 100, WINDOW_HEIGHT * 63 / 100, WINDOW_WIDTH * 12 / 100, WINDOW_HEIGHT * 6 / 100 };
 		SDL_SetRenderDrawColor(renderer, 255, 201, 14, 0xBF);
 		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 		SDL_RenderFillRect(renderer, &rect2);
-		SDL_RenderCopy(renderer, name.getTexture(), nullptr, name.getRect());
+		auto nameRect = *name.getRect();
+		nameRect.x = rect2.x + (rect2.w - nameRect.w) / 2;
+		nameRect.y = rect2.y + (rect2.h - nameRect.h) / 2;
+		SDL_RenderCopy(renderer, name.getTexture(), nullptr, &nameRect);
 	}
 	SDL_RenderCopy(renderer, text.getTexture(), nullptr, text.getRect());
 	SDL_RenderCopy(renderer, delta.getTexture(), nullptr, delta.getRect());
