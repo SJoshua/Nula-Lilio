@@ -76,7 +76,7 @@ void Script::readScript(std::string filename) {
 						break;
 					} else if (str[i] == '$') {
 						tag = "{FLAG}";
-						con = str.substr(i + 1, str.length() - i + 1);
+						con = str.substr(i, str.length() - i + 2);
 					}
 				}
 			}
