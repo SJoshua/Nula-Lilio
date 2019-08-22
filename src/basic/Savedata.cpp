@@ -21,6 +21,14 @@ std::string Savedata::serialize(void) {
 	return buffer.str();
 }
 
+std::string Savedata::getTime(void) {
+	char buf[128] = { 0 };
+	tm* local;
+	local = localtime(&timestamp);
+	strftime(buf, 64, "%Y-%m-%d %H:%M:%S", local);
+	return buf;
+}
+
 void Savedata::unserialize(std::string str) {
 	std::istringstream buffer(str);
 	buffer >> tag >> pos >> timestamp;

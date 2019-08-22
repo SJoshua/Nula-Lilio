@@ -25,6 +25,8 @@ public:
 
 	std::string serialize(void);
 
+	std::string getTime(void);
+
 	void unserialize(std::string);
 
 	void write(int stock);
