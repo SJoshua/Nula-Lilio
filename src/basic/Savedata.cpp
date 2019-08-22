@@ -22,11 +22,15 @@ std::string Savedata::serialize(void) {
 }
 
 std::string Savedata::getTime(void) {
-	char buf[128] = { 0 };
-	struct tm local;
-	localtime_s(&local, &timestamp);
-	strftime(buf, 64, "%Y-%m-%d %H:%M:%S", &local);
-	return buf;
+	if (timestamp) {
+		char buf[128] = { 0 };
+		struct tm local;
+		localtime_s(&local, &timestamp);
+		strftime(buf, 64, "%Y-%m-%d %H:%M:%S", &local);
+		return buf;
+	} else {
+		return " - None -";
+	}
 }
 
 void Savedata::unserialize(std::string str) {

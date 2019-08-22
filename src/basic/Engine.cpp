@@ -10,6 +10,15 @@ extern ResourceManager resources;
 bool running = false;
 
 Engine::Engine(void) {
+	fps_mStartTicks = 0;
+	fps_mPausedTicks = 0;
+	fps_mPaused = false;
+	fps_mStarted = false;
+
+	cap_mStartTicks = 0;
+	cap_mPausedTicks = 0;
+	cap_mStarted = false;
+	cap_mPaused = false;
 }
 
 bool Engine::init(void) {
@@ -82,11 +91,6 @@ void Engine::run(void) {
 	running = true;
 
 	int countedFrames = 0;
-
-	fps_mStartTicks = 0;
-	fps_mPausedTicks = 0;
-	fps_mPaused = false;
-	fps_mStarted = false;
 
 	while (running) {
 		cap_mStarted = true;

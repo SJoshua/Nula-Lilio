@@ -4,18 +4,19 @@
 #include <SDL.h>
 #include <ctime>
 #include <string>
+#include <utility>
 
+#include "basic/Config.h"
+#include "basic/Resource_Manager.h"
 #include "basic/Scene.h"
 #include "basic/Scene_Manager.h"
-#include "basic/Resource_Manager.h"
-#include "basic/Config.h"
 #include "basic/Script.h"
 
 #include "ui/Texture.h"
 
-#include "scenes/Start.h"
-#include "scenes/Save.h"
 #include "scenes/Load.h"
+#include "scenes/Save.h"
+#include "scenes/Start.h"
 
 class Dialogue: public Scene {
 private:
@@ -31,6 +32,7 @@ private:
 	// 3: load
 	// 4: title
 	Button autoBtn, skipBtn, saveBtn, loadBtn, titleBtn;
+	std::vector <std::pair<Button, std::string>> select;
 	Audio bgm, se;
 
 	SDL_Texture* takeScreenshot(void);

@@ -29,7 +29,7 @@ ColumnLimit: 0
 Cpp11BracedListStyle: false
 DerivePointerAlignment: false
 FixNamespaceComments: false
-IndentCaseLabels: false
+IndentCaseLabels: true
 IndentPPDirectives: None
 IndentWidth: 4
 MaxEmptyLinesToKeep: 10

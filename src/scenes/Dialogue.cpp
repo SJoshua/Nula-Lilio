@@ -2,8 +2,8 @@
 
 extern SceneManager scenes;
 extern ResourceManager resources;
-extern SDL_Renderer* renderer;
-extern SDL_Window* window;
+extern SDL_Renderer *renderer;
+extern SDL_Window *window;
 
 Dialogue::Dialogue(std::string filename, int pos) {
 	script = Script(filename, pos);
@@ -27,13 +27,13 @@ Dialogue::Dialogue(std::string filename, int pos) {
 		resources.text("[Title]", resources.font(DEFAULT_FONT, 40)));
 }
 
-SDL_Texture* Dialogue::takeScreenshot(void) {
+SDL_Texture *Dialogue::takeScreenshot(void) {
 	SDL_Texture *screenshot = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
 	SDL_Texture *ret = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
 	SDL_SetRenderTarget(renderer, screenshot);
 	render();
-	
+
 	SDL_SetRenderTarget(renderer, ret);
 	SDL_Rect rect = { 0, 0, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 };
 	SDL_RenderCopy(renderer, screenshot, nullptr, &rect);
@@ -64,21 +64,71 @@ void Dialogue::processScript(void) {
 	} else {
 		showName = false;
 	}
+	auto list = script.getSelect();
+
+	if (!list.empty()) {
+		// Disable auto / skip mode.
+		speed = 0;
+		std::vector<Texture> selectTexts(list.size());
+		int maxWidth = 0, maxHeight = 0;
+		for (unsigned int i = 0; i < list.size(); i++) {
+			selectTexts[i] = Texture(0, 0, resources.text(list[i].first, resources.font(DEFAULT_FONT, 30)));
+			maxWidth = std::max(maxWidth, selectTexts[i].getRect()->w);
+			maxHeight = std::max(maxHeight, selectTexts[i].getRect()->h);
+		}
+		int blockWidth = std::max(maxWidth + 5, WINDOW_WIDTH * 30 / 100);
+		int blockHeight = maxHeight + 10;
+		int gap = 30;
+		int bottom = WINDOW_HEIGHT * 80 / 100;
+		int totalHeight = blockHeight * list.size() + gap * (list.size() - 1);
+		int top = (bottom - totalHeight) / 2;
+		int left = (WINDOW_WIDTH - blockWidth) / 2;
+
+		for (unsigned int i = 0; i < list.size(); i++) {
+			auto normal = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, blockWidth, blockHeight);
+			auto active = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, blockWidth, blockHeight);
+
+			SDL_Rect rect = {
+				(blockWidth - selectTexts[i].getRect()->w) / 2, (blockHeight - selectTexts[i].getRect()->h) / 2,
+				selectTexts[i].getRect()->w, selectTexts[i].getRect()->h
+			};
+
+			SDL_SetRenderTarget(renderer, normal);
+			SDL_SetRenderDrawColor(renderer, 0x4F, 0xFF, 0xFF, 0xFF);
+			SDL_RenderFillRect(renderer, nullptr);
+			SDL_RenderCopy(renderer, selectTexts[i].getTexture(), nullptr, &rect);
+
+			SDL_SetRenderTarget(renderer, active);
+			SDL_SetRenderDrawColor(renderer, 0xFF, 0x9F, 0xEF, 0xFF);
+			SDL_RenderFillRect(renderer, nullptr);
+			SDL_RenderCopy(renderer, selectTexts[i].getTexture(), nullptr, &rect);
+
+			select.push_back(std::make_pair(
+				Button(left, top + i * (blockHeight + gap), normal, active),
+				list[i].second));
+		}
+		SDL_SetRenderTarget(renderer, nullptr);
+	} else {
+		select.clear();
+	}
 }
 
 void Dialogue::onKeyDown(SDL_Keycode code) {
 	switch (code) {
-	case SDLK_RETURN:
-	case SDLK_SPACE:
-		//se.PlayChunk("test.wav");
-		processScript();
-		break;
+		case SDLK_RETURN:
+		case SDLK_SPACE:
+			//se.PlayChunk("test.wav");
+			processScript();
+			break;
 	}
 }
 
 void Dialogue::processButtons(void) {
 	if (current == 0) {
 		// switch auto mode
+		if (!select.empty()) {
+			return;
+		}
 		if (speed == 100) {
 			speed = 0;
 		} else {
@@ -86,6 +136,9 @@ void Dialogue::processButtons(void) {
 		}
 	} else if (current == 1) {
 		// switch skip mode
+		if (!select.empty()) {
+			return;
+		}
 		if (speed == 2) {
 			speed = 0;
 		} else {
@@ -102,6 +155,9 @@ void Dialogue::processButtons(void) {
 		scenes.push(new Load);
 	} else if (current == 4) {
 		scenes.jump(new Start);
+	} else if (current >= 10) {
+		script.jump(select[current - 10].second);
+		processScript();
 	}
 	current = 5;
 }
@@ -121,6 +177,15 @@ bool Dialogue::onMouseMove(int x, int y) {
 		return true;
 	} else if (titleBtn.isInside(x, y)) {
 		current = 4;
+		return true;
+	} else if (!select.empty()) {
+		for (unsigned int i = 0; i < select.size(); i++) {
+			if (select[i].first.isInside(x, y)) {
+				current = i + 10;
+				return true;
+			}
+		}
+		current = 5;
 		return true;
 	} else {
 		current = 5;
@@ -157,10 +222,12 @@ void Dialogue::update(void) {
 void Dialogue::render(void) {
 	// Background
 	SDL_RenderCopy(renderer, background.getTexture(), nullptr, background.getRect());
+
 	// Character
 	if (showCharacter) {
 		SDL_RenderCopy(renderer, character.getTexture(), nullptr, character.getRect());
 	}
+
 	// Text Box
 	SDL_Rect rect = { WINDOW_WIDTH * 10 / 100, WINDOW_HEIGHT * 70 / 100, WINDOW_WIDTH * 80 / 100, WINDOW_HEIGHT * 20 / 100 };
 	SDL_SetRenderDrawColor(renderer, 180, 193, 250, 0xCF);
@@ -179,6 +246,8 @@ void Dialogue::render(void) {
 		SDL_RenderCopy(renderer, name.getTexture(), nullptr, &nameRect);
 	}
 	SDL_RenderCopy(renderer, text.getTexture(), nullptr, text.getRect());
+
+	// Indicator
 	SDL_RenderCopy(renderer, delta.getTexture(), nullptr, delta.getRect());
 
 	// Toolbar
@@ -193,4 +262,9 @@ void Dialogue::render(void) {
 	SDL_RenderCopy(renderer, current == 2 ? saveBtn.getActive() : saveBtn.getNormal(), nullptr, saveBtn.getRect());
 	SDL_RenderCopy(renderer, current == 3 ? loadBtn.getActive() : loadBtn.getNormal(), nullptr, loadBtn.getRect());
 	SDL_RenderCopy(renderer, current == 4 ? titleBtn.getActive() : titleBtn.getNormal(), nullptr, titleBtn.getRect());
+
+	// Select
+	for (unsigned int i = 0; i < select.size(); i++) {
+		SDL_RenderCopy(renderer, current == i + 10 ? select[i].first.getActive() : select[i].first.getNormal(), nullptr, select[i].first.getRect());
+	}
 }

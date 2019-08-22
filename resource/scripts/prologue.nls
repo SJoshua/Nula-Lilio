@@ -509,6 +509,8 @@
 
 @bg[white]
 
+$meet
+
 #[和訳 x=「こんにちは……」]
 [露卡]	「Bonan tagon...」
 
@@ -602,10 +604,11 @@
 @bg[ev/ruka/a2.png]
 
 #[和訳 x=「Ｊｕｌｉａｍｏ(フミヅキアイ)を話せますか？」]
+
+@sl[{Cxu vi?$cxu_vi}{Parolas?$parolas}{Juliamo?$juliamo}]
 [露卡]	「Cxu vi parolas la lingvon "Juliamo"?」
 
 # 分歧点
-@sl[{Cxu vi?$cxu_vi}{Parolas?$parolas}{Juliamo?$juliamo}]
 
 $cxu_vi
 
@@ -810,5 +813,11 @@ $jes
 
 @bg[black]
 
+@sl[{好的！$meet}{不了，告辞。$end}]
 [INFO]	Demo到此结束。
+	要回到遇到露卡的时候再玩一次吗？
+
+$end
+
+[INFO]	Thanks for playing!
 

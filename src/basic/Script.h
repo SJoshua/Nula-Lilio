@@ -1,22 +1,31 @@
 #ifndef BASIC_SCRIPT_H
 #define BASIC_SCRIPT_H
 
-#include <iostream>
-#include <fstream>
+#include <regex>
 #include <string>
 #include <vector>
-#include <regex>
+#include <utility>
+#include <fstream>
+#include <memory>
+#include <iostream>
 
 #include "basic/Resource_Manager.h"
 
-struct page {
+struct Position {
+	int x, y, tx, ty, speed;
+};
+
+struct Unit {
 	std::string name, text, background, character;
+	Position bgPos, chPos;
+	bool select;
+	std::vector <std::pair <std::string, std::string>> arguments;
 };
 
 class Script {
 private:
 	unsigned int pos = 0;
-	std::vector <page> script;
+	std::vector<Unit> script;
 	std::string tag;
 
 public:
@@ -36,9 +45,11 @@ public:
 
 	std::string getTag(void);
 
+	std::vector <std::pair <std::string, std::string>> getSelect(void);
+
 	unsigned int getPosition(void);
 
-	void jump(int p);
+	void jump(std::string flag);
 
 	bool next(void);
 };
