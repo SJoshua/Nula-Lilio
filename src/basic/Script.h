@@ -12,20 +12,21 @@
 #include "basic/Resource_Manager.h"
 
 struct Position {
-	int x, y, tx, ty, speed;
+	int x, y;
 };
 
 struct Unit {
 	std::string name, text, background, character;
-	Position bgPos, chPos;
-	bool select;
+	bool select = false;
+	int bgSpeed = 0, chSpeed = 0;
+	std::vector <Position> bgPos, chPos; 
 	std::vector <std::pair <std::string, std::string>> arguments;
 };
 
 class Script {
 private:
 	unsigned int pos = 0;
-	std::vector<Unit> script;
+	std::vector <Unit> script;
 	std::string tag;
 
 public:
@@ -46,6 +47,14 @@ public:
 	std::string getTag(void);
 
 	std::vector <std::pair <std::string, std::string>> getSelect(void);
+
+	std::vector <Position> getBackgroundPosition(void);
+
+	std::vector <Position> getCharacterPosition(void);
+
+	int getBackgroundSpeed(void);
+
+	int getCharacterSpeed(void);
 
 	unsigned int getPosition(void);
 

@@ -48,10 +48,13 @@ void Dialogue::processScript(void) {
 		scenes.jump(new Start);
 		return;
 	}
-	background = Texture(0, 0, resources.picture(script.getBackground()));
+	lastTick = tick;
+	bgPos = script.getBackgroundPosition();
+	chPos = script.getCharacterPosition();
+	background = Texture(bgPos.begin()->x, bgPos.begin()->y, resources.picture(script.getBackground()));
 	if (!script.getCharacter().empty()) {
 		showCharacter = true;
-		character = Texture(265, -100, resources.picture(script.getCharacter()));
+		character = Texture(chPos.begin()->x, chPos.begin()->y, resources.picture(script.getCharacter()));
 	} else {
 		showCharacter = false;
 	}
@@ -69,7 +72,7 @@ void Dialogue::processScript(void) {
 	if (!list.empty()) {
 		// Disable auto / skip mode.
 		speed = 0;
-		std::vector<Texture> selectTexts(list.size());
+		std::vector <Texture> selectTexts(list.size());
 		int maxWidth = 0, maxHeight = 0;
 		for (unsigned int i = 0; i < list.size(); i++) {
 			selectTexts[i] = Texture(0, 0, resources.text(list[i].first, resources.font(DEFAULT_FONT, 30)));
@@ -122,7 +125,9 @@ void Dialogue::onKeyDown(SDL_Keycode code) {
 		case SDLK_RETURN:
 		case SDLK_SPACE:
 			//se.PlayChunk("test.wav");
-			processScript();
+			if (select.empty()) {
+				processScript();
+			}
 			break;
 	}
 }
@@ -221,6 +226,24 @@ void Dialogue::update(void) {
 			processScript();
 		}
 	}
+	if (bgPos.size() > 1) {
+		// speed: the number of ticks required for one step
+		int dur = tick - lastTick;
+		int spd = script.getBackgroundSpeed();
+		if (!spd) {
+			spd = 30;
+		}
+		int step = dur / spd;
+		int delt = dur % spd;
+		if (step < bgPos.size() - 1) {
+			int x_step = bgPos[step + 1].x - bgPos[step].x;
+			int y_step = bgPos[step + 1].y - bgPos[step].y;
+			background.moveTo(bgPos[step].x + x_step * delt / spd, bgPos[step].y +  y_step * delt / spd);
+		} else {
+			background.moveTo(bgPos.back().x, bgPos.back().y);
+		}
+	}
+	
 }
 
 void Dialogue::render(void) {

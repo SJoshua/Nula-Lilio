@@ -12,27 +12,40 @@ void Script::readScript(std::string filename) {
 	tag = filename;
 	std::ifstream fs;
 	fs.open("./resource/scripts/" + filename);
-	std::string tag, str, con, nextBackground, nextCharacter;
-	std::vector<std::pair<std::string, std::string>> select;
 	script.push_back({ "{INFO}", filename, "", "" });
-	while (getline(fs, str)) {
+	std::string str;
+	Unit next;
+	bool modifyBg = false, modifyCh = false;
+
+	while (std::getline(fs, str)) {
 		if (str.empty()) {
-			if (!con.empty()) {
-				if (nextCharacter == "-") {
-					nextCharacter.clear();
+			if (!next.text.empty()) {
+				if (next.character == "-") {
+					next.character.clear();
 				}
-				if (nextBackground == "-") {
-					nextBackground = "black";
+				if (next.background == "-") {
+					next.background = "black";
 				}
-				Unit nxt = { tag, con, nextBackground, nextCharacter };
-				if (!select.empty()) {
-					nxt.select = true;
-					nxt.arguments = select;
-					select.clear();
+				if (!next.arguments.empty()) {
+					next.select = true;
 				}
-				script.push_back(nxt);
-				tag.clear();
-				con.clear();
+				if (next.bgPos.empty()) {
+					if (modifyBg || script.back().bgPos.empty()) {
+						next.bgPos.push_back({ 0, 0 });
+					} else {
+						next.bgPos.push_back(script.back().bgPos.back());
+					}
+				}
+				if (next.chPos.empty()) {
+					if (modifyCh || script.back().chPos.empty()) {
+						next.chPos.push_back({ 265, -100 });
+					} else {
+						next.chPos.push_back(script.back().chPos.back());
+					}
+				}
+				script.push_back(next);
+				next = { "", "", next.background, next.character };
+				modifyBg = false, modifyCh = false;
 			}
 		} else {
 			if (str[0] == '#') {  // Comments
@@ -60,41 +73,75 @@ void Script::readScript(std::string filename) {
 					ext = str.substr(left + 1, right - left - 1);
 				}
 				if (cmd == "bg") {
-					nextBackground = para;
+					next.background = para;
+					modifyBg = true;
+					int last = -1;
+					if (!ext.empty()) {
+						std::regex pattern("[\\-\\d+]+");
+						for (std::sregex_iterator sit(ext.cbegin(), ext.cend(), pattern); sit != std::sregex_iterator(); sit++) {
+							int num = std::stoi(sit->str(0));
+							if (last != -1) {
+								next.bgPos.push_back({last, num});
+								last = -1;
+							} else {
+								last = num;
+							}
+						}
+						if (last != -1) {
+							next.bgSpeed = last;
+						}
+					}
 				} else if (cmd == "ch") {
-					nextCharacter = para;
+					next.character = para;
+					modifyCh = true;
+					int last = -1;
+					if (!ext.empty()) {
+						std::regex pattern("[\\-\\d+]+");
+						for (std::sregex_iterator sit(ext.cbegin(), ext.cend(), pattern); sit != std::sregex_iterator(); sit++) {
+							int num = std::stoi(sit->str(0));
+							if (last != -1) {
+								next.chPos.push_back({ last, num });
+								last = -1;
+							} else {
+								last = num;
+							}
+						}
+						if (last != -1) {
+							next.chSpeed = last;
+						}
+					}
 				} else if (cmd == "jp") {
-					tag = "{JUMP}";
-					con = para;
+					next.name = "{JUMP}";
+					next.text = para;
 				} else if (cmd == "sl") {
 					std::regex pattern("\\{(.*?)(\\$.*?)\\}");
 					for (std::sregex_iterator sit(para.cbegin(), para.cend(), pattern); sit != std::sregex_iterator(); sit++) {
-						select.push_back(std::make_pair(sit->str(1), sit->str(2)));
+						next.arguments.push_back(std::make_pair(sit->str(1), sit->str(2)));
 					}
 				} else {
 					std::cout << "Unsupported command indicator: " << cmd << std::endl;
 				}
 
 			} else {
-				if (tag.empty()) {
+				if (next.name.empty()) {
 					if (str[0] == '[') {
 						for (unsigned int i = 0; i < str.length(); i++) {
 							if (str[i] == ']') {
-								tag = str.substr(1, i - 1);
+								next.name = str.substr(1, i - 1);
 							}
 						}
 					}
 				}
 				for (unsigned int i = 0; i < str.length(); i++) {
 					if (str[i] == '\t') {
-						if (!con.empty()) {
-							con += "\n";
+						if (!next.text.empty()) {
+							next.text += "\n";
 						}
-						con += str.substr(i + 1, str.length() - i - 1);
+						next.text += str.substr(i + 1, str.length() - i - 1);
 						break;
 					} else if (str[i] == '$') {
-						tag = "{FLAG}";
-						con = str.substr(i, str.length() - i + 2);
+						next.name = "{FLAG}";
+						next.text = str.substr(i, str.length() - i + 2);
 					}
 				}
 			}
@@ -127,6 +174,22 @@ unsigned int Script::getPosition(void) {
 	return pos;
 }
 
+std::vector <Position> Script::getBackgroundPosition(void) {
+	return script[pos].bgPos;
+}
+
+std::vector <Position> Script::getCharacterPosition(void) {
+	return script[pos].chPos;
+}
+
+int Script::getBackgroundSpeed(void) {
+	return script[pos].bgSpeed;
+}
+
+int Script::getCharacterSpeed(void) {
+	return script[pos].chSpeed;
+}
+
 std::vector <std::pair <std::string, std::string>> Script::getSelect(void) {
 	return script[pos].arguments;
 }
@@ -142,6 +205,11 @@ void Script::jump(std::string flag) {
 
 bool Script::next(void) {
 	pos++;
+	//std::cout << pos << ": " << script[pos].background << " ";
+	//for (auto e: script[pos].bgPos) {
+	//	std::cout << "(" << e.x << ", " << e.y << ") ";
+	//}
+	//std::cout << "\n";
 	//std::cout << pos << ": " << script[pos].name << ", " << script[pos].text << (script[pos].select ? "S" : "N") << std::endl;
 	//for (auto e : script[pos].arguments) {
 	//	std::cout << e.first << "->" << e.second << "\n";

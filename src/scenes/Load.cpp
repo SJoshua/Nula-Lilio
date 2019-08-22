@@ -4,15 +4,6 @@ extern SceneManager scenes;
 extern ResourceManager resources;
 extern SDL_Renderer *renderer;
 
-const int Gap = WINDOW_HEIGHT * 2 / 100;
-const int Load_X = Gap;
-const int Load_width = WINDOW_WIDTH / 2 - 2 * Gap;
-const int Load_height = (WINDOW_HEIGHT - 10 * Gap) / 9;
-const int pic_width = WINDOW_WIDTH * 45 / 100;
-const int pic_height = WINDOW_HEIGHT * 45 / 100;
-const int pic_X = WINDOW_WIDTH / 2 + Gap * 3;
-const int pic_Y = (WINDOW_HEIGHT - pic_height) / 2;
-
 Load::Load(void) {
 	background = Texture(0, 0, resources.picture("blackboard.png"));
 

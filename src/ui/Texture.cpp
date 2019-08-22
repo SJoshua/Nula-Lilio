@@ -16,6 +16,11 @@ void Texture::move(int dx, int dy) {
 	rect.y += dy;
 }
 
+void Texture::moveTo(int x, int y) {
+	rect.x = x;
+	rect.y = y;
+}
+
 SDL_Texture* Texture::getTexture(void) {
 	return texture;
 }

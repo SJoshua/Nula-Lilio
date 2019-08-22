@@ -15,6 +15,8 @@ public:
 
 	void move(int dx, int dy);
 
+	void moveTo(int x, int y);
+
 	SDL_Texture* getTexture(void);
 
 	SDL_Rect* getRect(void);

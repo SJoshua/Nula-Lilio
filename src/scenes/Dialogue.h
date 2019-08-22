@@ -23,9 +23,10 @@ private:
 	Script script;
 	Texture background, character, text, name, delta;
 	bool showCharacter, showName;
+	int lastTick = 0;
 	int tick = 0;
-	int speed = 0;
 	int current = 5;
+	int speed = 0;
 	// 0: auto
 	// 1: skip
 	// 2: save
@@ -33,6 +34,7 @@ private:
 	// 4: title
 	Button autoBtn, skipBtn, saveBtn, loadBtn, titleBtn;
 	std::vector <std::pair<Button, std::string>> select;
+	std::vector <Position> bgPos, chPos;
 	Audio bgm, se;
 
 	SDL_Texture* takeScreenshot(void);
