@@ -7,6 +7,7 @@
 #include <SDL_Image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
+#include <memory>
 
 #include "basic/Config.h"
 
@@ -30,7 +31,7 @@ public:
 
 	TTF_Font* font(std::string filename, int size);
 	
-	SDL_Texture* picture(std::string filename, bool force = false);
+	SDL_Texture* picture(std::string filename, int width = 0, int height = 0, bool force = false);
 
 	Mix_Chunk* chunk(std::string filename);
 

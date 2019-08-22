@@ -18,20 +18,11 @@
 
 class Load: public Scene {
 private:
-	Texture background;
-	std::vector <Savedata> data;
+	Texture background, title, loadLabel;
+	std::vector<Savedata> data;
+	std::vector<Button> buttons;
 	int current = 10;
-	/*
-	0 return
-	1 load_1
-	2 load_2
-	...
-	9 load_9
-	10 null
-	*/
-	Button returnBtn;
-	Button Load_1Btn, Load_2Btn, Load_3Btn, Load_4Btn, Load_5Btn;
-	Button Load_6Btn, Load_7Btn, Load_8Btn, Load_9Btn;
+	Button backBtn;
 
 public:
 	Load(void);
@@ -45,7 +36,8 @@ public:
 	void update(void);
 
 	void render(void);
-	
+
 };
+
 
 #endif

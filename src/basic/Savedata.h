@@ -9,6 +9,7 @@
 #include <ctime>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <memory>
 
 #include "basic/Resource_Manager.h"
 
@@ -27,7 +28,7 @@ public:
 
 	std::string getTime(void);
 
-	void unserialize(std::string);
+	void unserialize(std::string str);
 
 	void write(int stock);
 
