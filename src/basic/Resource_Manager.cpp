@@ -74,12 +74,12 @@ TTF_Font* ResourceManager::font(std::string filename, int size) {
 	return fonts[filename][size];
 }
 
-SDL_Texture* ResourceManager::picture(std::string filename) {	
+SDL_Texture* ResourceManager::picture(std::string filename, bool force) {	
 	std::string path = "./resource/pictures/" + filename;
 	if (filename.empty()) {
 		return nullptr;
 	}
-	if (!pictures.count(filename)) {
+	if (force || !pictures.count(filename)) {
 		auto pic = loadPicture(path);
 		if (pic == nullptr) {
 			std::cout << "[Failed] load picture: " << path << std::endl;

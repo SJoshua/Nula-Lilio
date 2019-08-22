@@ -79,7 +79,7 @@
       <Filter>Source Files\basic</Filter>
     </ClCompile>
     <ClCompile Include="src\scenes\Loading.cpp">
-      <Filter>Source Files\basic</Filter>
+      <Filter>Source Files\scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

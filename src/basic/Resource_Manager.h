@@ -30,7 +30,7 @@ public:
 
 	TTF_Font* font(std::string filename, int size);
 	
-	SDL_Texture* picture(std::string filename);
+	SDL_Texture* picture(std::string filename, bool force = false);
 
 	Mix_Chunk* chunk(std::string filename);
 
