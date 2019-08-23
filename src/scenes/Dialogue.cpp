@@ -1,5 +1,6 @@
 #include "scenes/Dialogue.h"
 
+extern Audio audio;
 extern SceneManager scenes;
 extern ResourceManager resources;
 extern SDL_Renderer *renderer;
@@ -117,6 +118,11 @@ void Dialogue::processScript(void) {
 		SDL_SetRenderTarget(renderer, nullptr);
 	} else {
 		select.clear();
+	}
+	auto voice = script.getVoice();
+	if (!voice.empty()) {
+		audio.stopSound();
+		audio.playSound(resources.chunk(voice));
 	}
 }
 

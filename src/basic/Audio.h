@@ -13,11 +13,11 @@ class Audio {
 public:
 	Audio(void);
 
-	void playMusic(Mix_Music*);
+	void playMusic(Mix_Music *music);
 
 	void stopMusic(void);
 
-	void playSound(Mix_Chunk*, int channel = -1);
+	void playSound(Mix_Chunk *chunk, int channel = -1);
 
 	void stopSound(int channel = -1);
 };

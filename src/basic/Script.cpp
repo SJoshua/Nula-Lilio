@@ -23,7 +23,7 @@ void Script::readScript(std::string filename) {
 				if (next.character == "-") {
 					next.character.clear();
 				}
-				if (next.background == "-") {
+				if (next.background == "-" || next.background.empty()) {
 					next.background = "black";
 				}
 				if (!next.arguments.empty()) {
@@ -110,6 +110,8 @@ void Script::readScript(std::string filename) {
 							next.chSpeed = last;
 						}
 					}
+				} else if (cmd == "vo") {
+					next.voice = para;
 				} else if (cmd == "jp") {
 					next.name = "{JUMP}";
 					next.text = para;
@@ -164,6 +166,10 @@ std::string Script::getBackground(void) {
 
 std::string Script::getCharacter(void) {
 	return script[pos].character;
+}
+
+std::string Script::getVoice(void) {
+	return script[pos].voice;
 }
 
 std::string Script::getTag(void) {
