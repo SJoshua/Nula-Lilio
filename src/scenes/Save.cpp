@@ -46,9 +46,8 @@ void Save::process(void) {
 		scenes.pop();
 		return;
 	} else if (current <= 9) {
-		data[current] = state;
-		state.write(current);
-		refresh(current);
+		reg = current;
+		scenes.push(new Confirm(callback, "保存存档到这个位置。\n确认执行吗？"));
 	}
 }
 
@@ -75,6 +74,12 @@ void Save::onMouseDown(int x, int y) {
 }
 
 void Save::update(void) {
+	if (callback) {
+		data[reg] = state;
+		state.write(reg);
+		refresh(reg);
+		callback = false;
+	}
 }
 
 void Save::render(void) {

@@ -14,8 +14,8 @@
 #include "ui/Button.h"
 #include "ui/Texture.h"
 
+#include "scenes/Confirm.h"
 #include "scenes/Dialogue.h"
-#include "scenes/Saving.h"
 
 class Save: public Scene {
 private:
@@ -23,7 +23,8 @@ private:
 	std::vector <Savedata> data;
 	std::vector <Button> buttons;
 	Savedata state;
-	int current = 10;
+	bool callback = false;
+	int current = 10, reg = 0;
 	Button backBtn;
 
 public:

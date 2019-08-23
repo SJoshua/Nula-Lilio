@@ -118,11 +118,9 @@
     <ClCompile Include="src\basic\Script.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\scenes\Dialogue.cpp" />
-    <ClCompile Include="src\scenes\Exit.cpp" />
+    <ClCompile Include="src\scenes\Confirm.cpp" />
     <ClCompile Include="src\scenes\Load.cpp" />
-    <ClCompile Include="src\scenes\Loading.cpp" />
     <ClCompile Include="src\scenes\Save.cpp" />
-    <ClCompile Include="src\scenes\Saving.cpp" />
     <ClCompile Include="src\scenes\Start.cpp" />
     <ClCompile Include="src\ui\Button.cpp" />
     <ClCompile Include="src\ui\Texture.cpp" />
@@ -137,11 +135,9 @@
     <ClInclude Include="src\basic\Scene_Manager.h" />
     <ClInclude Include="src\basic\Script.h" />
     <ClInclude Include="src\scenes\Dialogue.h" />
-    <ClInclude Include="src\scenes\Exit.h" />
+    <ClInclude Include="src\scenes\Confirm.h" />
     <ClInclude Include="src\scenes\Load.h" />
-    <ClInclude Include="src\scenes\Loading.h" />
     <ClInclude Include="src\scenes\Save.h" />
-    <ClInclude Include="src\scenes\Saving.h" />
     <ClInclude Include="src\scenes\Start.h" />
     <ClInclude Include="src\ui\Button.h" />
     <ClInclude Include="src\ui\Texture.h" />

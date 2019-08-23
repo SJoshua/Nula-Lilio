@@ -22,21 +22,23 @@
 class Dialogue: public Scene {
 private:
 	Script script;
-	Texture background, character, text, name, delta;
-	std::string bgm;
-	bool showCharacter, showName;
+	bool showCharacter, showName, callback;
+	/* current: active button id
+	 * 0: auto
+	 * 1: skip
+	 * 2: save
+	 * 3: load
+	 * 4: title
+	 */
+	int current = 5;
 	int lastTick = 0;
 	int tick = 0;
-	int current = 5;
 	int speed = 0;
-	// 0: auto
-	// 1: skip
-	// 2: save
-	// 3: load
-	// 4: title
+	std::string bgm;
+	std::vector<std::pair<Button, std::string>> select;
+	std::vector<Position> bgPos, chPos;
+	Texture background, character, text, name, delta;
 	Button autoBtn, skipBtn, saveBtn, loadBtn, titleBtn;
-	std::vector <std::pair<Button, std::string>> select;
-	std::vector <Position> bgPos, chPos;
 
 	SDL_Texture* takeScreenshot(void);
 

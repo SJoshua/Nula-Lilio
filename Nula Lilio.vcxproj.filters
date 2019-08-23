@@ -42,9 +42,6 @@
     <ClCompile Include="src\ui\Button.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
-    <ClCompile Include="src\scenes\Exit.cpp">
-      <Filter>Source Files\scenes</Filter>
-    </ClCompile>
     <ClCompile Include="src\scenes\Load.cpp">
       <Filter>Source Files\scenes</Filter>
     </ClCompile>
@@ -72,13 +69,10 @@
     <ClCompile Include="src\basic\Savedata.cpp">
       <Filter>Source Files\basic</Filter>
     </ClCompile>
-    <ClCompile Include="src\scenes\Saving.cpp">
-      <Filter>Source Files\scenes</Filter>
-    </ClCompile>
     <ClCompile Include="src\basic\Audio.cpp">
       <Filter>Source Files\basic</Filter>
     </ClCompile>
-    <ClCompile Include="src\scenes\Loading.cpp">
+    <ClCompile Include="src\scenes\Confirm.cpp">
       <Filter>Source Files\scenes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -90,9 +84,6 @@
       <Filter>Header Files\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\scenes\Load.h">
-      <Filter>Header Files\scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scenes\Exit.h">
       <Filter>Header Files\scenes</Filter>
     </ClInclude>
     <ClInclude Include="src\scenes\Save.h">
@@ -122,17 +113,14 @@
     <ClInclude Include="src\basic\Script.h">
       <Filter>Header Files\basic</Filter>
     </ClInclude>
-    <ClInclude Include="src\scenes\Loading.h">
-      <Filter>Header Files\scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scenes\Saving.h">
-      <Filter>Header Files\scenes</Filter>
-    </ClInclude>
     <ClInclude Include="src\basic\Audio.h">
       <Filter>Header Files\basic</Filter>
     </ClInclude>
     <ClInclude Include="src\basic\Savedata.h">
       <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Confirm.h">
+      <Filter>Header Files\scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

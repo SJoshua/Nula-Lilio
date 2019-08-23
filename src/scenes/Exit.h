@@ -1,5 +1,5 @@
-#ifndef SCENES_EXIT_H
-#define SCENES_EXIT_H
+#ifndef SCENES_CONFIRM_H
+#define SCENES_CONFIRM_H
 
 #include "basic/Config.h"
 #include "basic/Resource_Manager.h"
@@ -9,14 +9,14 @@
 #include "ui/Button.h"
 #include "ui/Texture.h"
 
-class Exit: public Scene {
+class Confirm: public Scene {
 private:
 	int current = 2;
 	Button yesBtn, noBtn;
 	Texture notice;
 
 public:
-	Exit(void);
+	Confirm(bool &ret, std::string text);
 
 	void process(void);
 

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 
+#include "basic/Audio.h"
 #include "basic/Resource_Manager.h"
 #include "basic/Savedata.h"
 #include "basic/Scene.h"
@@ -13,7 +14,7 @@
 #include "ui/Button.h"
 #include "ui/Texture.h"
 
-#include "scenes/Loading.h"
+#include "scenes/Confirm.h"
 #include "scenes/Start.h"
 
 class Load: public Scene {
@@ -21,7 +22,8 @@ private:
 	Texture background, title, loadLabel;
 	std::vector <Savedata> data;
 	std::vector <Button> buttons;
-	int current = 10;
+	int current = 10, reg = 0;
+	bool callback = false;
 	Button backBtn;
 
 public:

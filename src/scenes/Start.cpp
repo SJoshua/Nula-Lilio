@@ -36,7 +36,7 @@ void Start::process(void) {
 	} else if (current == 1) {
 		scenes.push(new Load);
 	} else if (current == 2) {
-		scenes.push(new Exit);
+		scenes.push(new Confirm(callback, "确认要退出游戏吗？"));
 	}
 	current = -1;
 }
@@ -45,16 +45,16 @@ void Start::onKeyDown(SDL_Keycode code) {
 	// const Uint8 *currentKeyStates = SDL_GetKeyboardState(nullptr);
 	// int step = currentKeyStates[SDL_SCANCODE_LSHIFT] ? 4 : 1;
 	switch (code) {
-	case SDLK_RIGHT:
-	case SDLK_DOWN:
-		(current += 1) %= 3;
-		break;
-	case SDLK_LEFT:
-	case SDLK_UP:
-		(current += 2) %= 3;
-		break;
-	case SDLK_RETURN:
-		process();
+		case SDLK_RIGHT:
+		case SDLK_DOWN:
+			(current += 1) %= 3;
+			break;
+		case SDLK_LEFT:
+		case SDLK_UP:
+			(current += 2) %= 3;
+			break;
+		case SDLK_RETURN:
+			process();
 	}
 }
 
@@ -82,6 +82,9 @@ void Start::onMouseDown(int x, int y) {
 }
 
 void Start::update(void) {
+	if (callback) {
+		running = false;
+	}
 }
 
 void Start::render(void) {

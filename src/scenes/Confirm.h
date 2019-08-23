@@ -1,5 +1,7 @@
-#ifndef SCENES_SAVING_H
-#define SCENES_SAVING_H
+#ifndef SCENES_CONFIRM_H
+#define SCENES_CONFIRM_H
+
+#include <string>
 
 #include "basic/Config.h"
 #include "basic/Resource_Manager.h"
@@ -9,14 +11,15 @@
 #include "ui/Button.h"
 #include "ui/Texture.h"
 
-class Saving: public Scene {
+class Confirm: public Scene {
 private:
 	int current = 2;
+	bool &ret;
 	Button yesBtn, noBtn;
 	Texture notice;
 
 public:
-	Saving(void);
+	Confirm(bool &ret, std::string text);
 
 	void process(void);
 

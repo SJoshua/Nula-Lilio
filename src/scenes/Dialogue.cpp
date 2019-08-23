@@ -141,7 +141,7 @@ void Dialogue::onKeyDown(SDL_Keycode code) {
 	switch (code) {
 		case SDLK_RETURN:
 		case SDLK_SPACE:
-			//se.PlayChunk("test.wav");
+			// audio.playSound("click.wav");
 			if (select.empty()) {
 				processScript();
 			}
@@ -180,7 +180,7 @@ void Dialogue::processButtons(void) {
 	} else if (current == 3) {
 		scenes.push(new Load);
 	} else if (current == 4) {
-		scenes.jump(new Start);
+		scenes.push(new Confirm(callback, "未保存的进度将丢失。\n确认要回到标题画面吗？"));
 	} else if (current >= 10) {
 		script.jump(select[current - 10].second);
 		processScript();
@@ -232,6 +232,10 @@ void Dialogue::onMouseDown(int x, int y) {
 }
 
 void Dialogue::update(void) {
+	if (callback) {
+		scenes.jump(new Start);
+		return;
+	}
 	tick++;
 	if (tick % 20 < 10) {
 		delta.move(0, 1);

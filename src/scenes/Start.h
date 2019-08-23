@@ -10,12 +10,13 @@
 #include "ui/Button.h"
 #include "ui/Texture.h"
 
+#include "scenes/Confirm.h"
 #include "scenes/Dialogue.h"
-#include "scenes/Exit.h"
 #include "scenes/Load.h"
 
 class Start: public Scene {
 private:
+	bool callback = false;
 	int current = -1;
 	// 0: Game Start
 	// 1: Continue

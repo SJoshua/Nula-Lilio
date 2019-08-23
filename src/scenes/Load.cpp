@@ -1,5 +1,6 @@
 #include "scenes/Load.h"
 
+extern Audio audio;
 extern SceneManager scenes;
 extern ResourceManager resources;
 extern SDL_Renderer *renderer;
@@ -34,8 +35,8 @@ void Load::process(void) {
 		return;
 	} else if (current <= 9) {
 		if (data[current].pic) {
-			scenes.pop();
-			scenes.jump(new Dialogue(data[current].tag, data[current].pos));
+			reg = current;
+			scenes.push(new Confirm(callback, "将加载该位置的存档。\n确认执行吗？"));
 		}
 	}
 }
@@ -63,6 +64,12 @@ void Load::onMouseDown(int x, int y) {
 }
 
 void Load::update(void) {
+	if (callback) {
+		scenes.pop();
+		audio.stopMusic();
+		audio.stopSound();
+		scenes.jump(new Dialogue(data[reg].tag, data[reg].pos));
+	}
 }
 
 void Load::render(void) {
