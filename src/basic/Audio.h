@@ -15,6 +15,8 @@ public:
 
 	void playMusic(Mix_Music *music);
 
+	void fadeOutMusic(void);
+
 	void stopMusic(void);
 
 	void playSound(Mix_Chunk *chunk, int channel = -1);

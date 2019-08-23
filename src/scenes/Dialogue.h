@@ -31,13 +31,13 @@ private:
 	 * 4: title
 	 */
 	int current = 5;
-	int lastTick = 0;
+	int lastTick = 0, lastChange = 0;
 	int tick = 0;
 	int speed = 0;
 	std::string bgm;
 	std::vector<std::pair<Button, std::string>> select;
 	std::vector<Position> bgPos, chPos;
-	Texture background, character, text, name, delta;
+	Texture lastBackground, background, character, text, name, delta;
 	Button autoBtn, skipBtn, saveBtn, loadBtn, titleBtn;
 
 	SDL_Texture* takeScreenshot(void);

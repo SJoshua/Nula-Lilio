@@ -8,8 +8,15 @@ void Audio::playMusic(Mix_Music *music) {
 	if ((Mix_PlayingMusic() == 1) | (Mix_PausedMusic() == 1)) {
 		stopMusic();
 	}
-	Mix_PlayMusic(music, -1);
-	Mix_VolumeMusic(50);
+	// Mix_PlayMusic(music, -1);
+	Mix_FadeInMusic(music, -1, 2000);
+	Mix_VolumeMusic(40);
+}
+
+void Audio::fadeOutMusic(void) {
+	if (Mix_PlayingMusic() == 1) {
+		Mix_FadeOutMusic(2000);
+	}
 }
 
 void Audio::stopMusic(void) {

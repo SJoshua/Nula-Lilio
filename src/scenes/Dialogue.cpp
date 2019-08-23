@@ -54,7 +54,14 @@ void Dialogue::processScript(void) {
 	lastTick = tick;
 	bgPos = script.getBackgroundPosition();
 	chPos = script.getCharacterPosition();
-	background = Texture(bgPos.begin()->x, bgPos.begin()->y, resources.picture(script.getBackground()));
+	auto nextBackground = Texture(bgPos.begin()->x, bgPos.begin()->y, resources.picture(script.getBackground()));
+	if (background != nextBackground) {
+		lastBackground = background;
+		lastBackground.setAlpha(255);
+		background = nextBackground;
+		background.setAlpha(0);
+		lastChange = tick;
+	}
 	if (!script.getCharacter().empty()) {
 		showCharacter = true;
 		character = Texture(chPos.begin()->x, chPos.begin()->y, resources.picture(script.getCharacter()));
@@ -128,7 +135,7 @@ void Dialogue::processScript(void) {
 	}
 	if (bgm != script.getBGM()) {
 		if (!bgm.empty()) {
-			audio.stopMusic();
+			audio.fadeOutMusic();
 		}
 		bgm = script.getBGM();
 		if (!bgm.empty()) {
@@ -242,16 +249,23 @@ void Dialogue::update(void) {
 	} else if (tick % 20 < 20) {
 		delta.move(0, -1);
 	}
+
+	int dur = tick - lastTick, dur2 = tick - lastChange;
+
+	if (lastBackground != background) {
+		//lastBackground.setAlpha(255 * (30 - std::min(dur2, 30)) / 30);
+		background.setAlpha(255 * std::min(dur2, 30) / 30);
+	}
+
 	if (speed) {
 		if (tick % speed == 0) {
-			if (speed == 2 || (!audio.isPlayingSound() && (tick - lastTick) > (int) (bgPos.size() - 1) * script.getBackgroundSpeed())) {
+			if (speed == 2 || (!audio.isPlayingSound() && dur > (int) (bgPos.size() - 1) * script.getBackgroundSpeed())) {
 				processScript();
 			}
 		}
 	}
 	if (bgPos.size() > 1) {
 		// speed: the number of ticks required for one step
-		int dur = tick - lastTick;
 		int spd = script.getBackgroundSpeed();
 		if (!spd) { 
 			spd = 30;
@@ -270,7 +284,13 @@ void Dialogue::update(void) {
 }
 
 void Dialogue::render(void) {
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+	SDL_RenderClear(renderer);
+
 	// Background
+	if (lastBackground.getTexture()) {
+		SDL_RenderCopy(renderer, lastBackground.getTexture(), nullptr, lastBackground.getRect());
+	}
 	SDL_RenderCopy(renderer, background.getTexture(), nullptr, background.getRect());
 
 	// Character

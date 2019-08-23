@@ -13,9 +13,15 @@ public:
 
 	Texture(int x, int y, SDL_Texture *texture);
 
+	bool operator == (const Texture &p);
+
+	bool operator != (const Texture &p);
+
 	void move(int dx, int dy);
 
 	void moveTo(int x, int y);
+
+	void setAlpha(int value);
 
 	SDL_Texture* getTexture(void);
 

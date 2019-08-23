@@ -11,6 +11,14 @@ Texture::Texture(int x, int y, SDL_Texture *texture): texture(texture) {
 	SDL_QueryTexture(texture, nullptr, nullptr, &rect.w, &rect.h);
 }
 
+bool Texture::operator == (const Texture &p) {
+	return rect.x == p.rect.x && rect.y == p.rect.y && rect.w == p.rect.w && rect.h == p.rect.h && texture == p.texture;
+}
+
+bool Texture::operator != (const Texture &p) {
+	return !(*this == p);
+}
+
 void Texture::move(int dx, int dy) {
 	rect.x += dx;
 	rect.y += dy;
@@ -19,6 +27,11 @@ void Texture::move(int dx, int dy) {
 void Texture::moveTo(int x, int y) {
 	rect.x = x;
 	rect.y = y;
+}
+
+void Texture::setAlpha(int value) {
+	SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+	SDL_SetTextureAlphaMod(texture, value);
 }
 
 SDL_Texture* Texture::getTexture(void) {
