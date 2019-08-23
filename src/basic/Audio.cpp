@@ -9,6 +9,7 @@ void Audio::playMusic(Mix_Music *music) {
 		stopMusic();
 	}
 	Mix_PlayMusic(music, -1);
+	Mix_VolumeMusic(50);
 }
 
 void Audio::stopMusic(void) {
