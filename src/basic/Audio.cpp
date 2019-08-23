@@ -6,11 +6,9 @@ Audio::Audio(void) {};
 
 void Audio::playMusic(Mix_Music *music) {
 	if ((Mix_PlayingMusic() == 1) | (Mix_PausedMusic() == 1)) {
-		Mix_HaltMusic();
-		Mix_PlayMusic(music, -1);
-	} else {
-		Mix_PlayMusic(music, -1);
+		stopMusic();
 	}
+	Mix_PlayMusic(music, -1);
 }
 
 void Audio::stopMusic(void) {
@@ -28,9 +26,5 @@ void Audio::stopSound(int channel) {
 }
 
 bool Audio::isPlayingSound(int channel) {
-	if (Mix_Playing(channel)) {
-		return true;
-	} else {
-		return false;
-	}
+	return Mix_Playing(channel);
 }

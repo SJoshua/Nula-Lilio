@@ -16,7 +16,7 @@ struct Position {
 };
 
 struct Unit {
-	std::string name, text, background, character, voice;
+	std::string name, text, background, character, bgm, voice;
 	bool select = false;
 	int bgSpeed = 0, chSpeed = 0;
 	std::vector <Position> bgPos, chPos; 
@@ -47,6 +47,8 @@ public:
 	std::string getVoice(void);
 
 	std::string getTag(void);
+
+	std::string getBGM(void);
 
 	std::vector <std::pair <std::string, std::string>> getSelect(void);
 

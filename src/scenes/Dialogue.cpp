@@ -124,6 +124,10 @@ void Dialogue::processScript(void) {
 		audio.stopSound();
 		audio.playSound(resources.chunk(voice));
 	}
+	if (bgm != script.getBGM()) {
+		bgm = script.getBGM();
+		audio.playMusic(resources.music(bgm));
+	}
 }
 
 void Dialogue::onKeyDown(SDL_Keycode code) {
@@ -239,7 +243,7 @@ void Dialogue::update(void) {
 		if (!spd) {
 			spd = 30;
 		}
-		int step = dur / spd;
+		unsigned int step = dur / spd;
 		int delt = dur % spd;
 		if (step < bgPos.size() - 1) {
 			int x_step = bgPos[step + 1].x - bgPos[step].x;

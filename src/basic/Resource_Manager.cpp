@@ -108,11 +108,11 @@ SDL_Texture* ResourceManager::picture(std::string filename, int width, int heigh
 Mix_Chunk* ResourceManager::chunk(std::string filename) {
 	std::string path = "./resource/chunks/" + filename;
 	if (!chunks.count(filename)) {
-		auto chu = loadChunk(path);
-		if (chu == nullptr) {
+		auto chunk = loadChunk(path);
+		if (chunk == nullptr) {
 			std::cout << "[Failed] load chunk: " << path << std::endl;
 		} else {
-			chunks[filename] = chu;
+			chunks[filename] = chunk;
 		}
 	}
 	return chunks[filename];
@@ -121,11 +121,11 @@ Mix_Chunk* ResourceManager::chunk(std::string filename) {
 Mix_Music* ResourceManager::music(std::string filename) {
 	std::string path = "./resource/musics/" + filename;
 	if (!musics.count(filename)) {
-		auto mus = loadMusic(path);
-		if (mus == nullptr) {
+		auto music = loadMusic(path);
+		if (music == nullptr) {
 			std::cout << "[Failed] load music: " << path << std::endl;
 		} else {
-			musics[filename] = mus;
+			musics[filename] = music;
 		}
 	}
 	return musics[filename];

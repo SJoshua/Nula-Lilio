@@ -23,6 +23,7 @@ class Dialogue: public Scene {
 private:
 	Script script;
 	Texture background, character, text, name, delta;
+	std::string bgm;
 	bool showCharacter, showName;
 	int lastTick = 0;
 	int tick = 0;
@@ -36,7 +37,6 @@ private:
 	Button autoBtn, skipBtn, saveBtn, loadBtn, titleBtn;
 	std::vector <std::pair<Button, std::string>> select;
 	std::vector <Position> bgPos, chPos;
-	Audio bgm, se;
 
 	SDL_Texture* takeScreenshot(void);
 

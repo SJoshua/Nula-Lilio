@@ -12,10 +12,10 @@ void Script::readScript(std::string filename) {
 	tag = filename;
 	std::ifstream fs;
 	fs.open("./resource/scripts/" + filename);
-	script.push_back({ "{INFO}", filename, "", "" });
+	script.push_back({ "{INFO}", filename });
 	std::string str;
 	Unit next;
-	bool modifyBg = false, modifyCh = false;
+	bool modifyBg = false, modifyCh = false, modifyBGM = false;
 
 	while (std::getline(fs, str)) {
 		if (str.empty()) {
@@ -44,21 +44,27 @@ void Script::readScript(std::string filename) {
 					}
 				}
 				script.push_back(next);
-				next = { "", "", next.background, next.character };
-				modifyBg = false, modifyCh = false;
+				next = { "", "", next.background, next.character, next.bgm };
+				modifyBg = false, modifyCh = false, modifyBGM = false;
 			}
 		} else {
 			if (str[0] == '#') {  // Comments
 				continue;
-			} else if (str[0] == '@' && str[3] == '[') {  // Commands
-				auto cmd = str.substr(1, 2);
-				unsigned last = 4;
+			} else if (str[0] == '@') {  // Commands
+				unsigned last = 0, begin = 0;
+				for (; last < str.length(); last++) {
+					if (str[last] == '[') {
+						break;
+					}
+				}
+				auto cmd = str.substr(1, last - 1);
+				begin = last;
 				for (; last < str.length(); last++) {
 					if (str[last] == ']') {
 						break;
 					}
 				}
-				auto para = str.substr(4, last - 4);
+				auto para = str.substr(begin + 1, last - begin - 1);
 				std::string ext;
 				int left = 0, right = 0;
 				for (; last < str.length(); last++) {
@@ -112,10 +118,13 @@ void Script::readScript(std::string filename) {
 					}
 				} else if (cmd == "vo") {
 					next.voice = para;
-				} else if (cmd == "jp") {
+				} else if (cmd == "bgm") {
+					next.bgm = para;
+					modifyBGM = true;
+				} else if (cmd == "jump") {
 					next.name = "{JUMP}";
 					next.text = para;
-				} else if (cmd == "sl") {
+				} else if (cmd == "select") {
 					std::regex pattern("\\{(.*?)(\\$.*?)\\}");
 					for (std::sregex_iterator sit(para.cbegin(), para.cend(), pattern); sit != std::sregex_iterator(); sit++) {
 						next.arguments.push_back(std::make_pair(sit->str(1), sit->str(2)));
@@ -170,6 +179,10 @@ std::string Script::getCharacter(void) {
 
 std::string Script::getVoice(void) {
 	return script[pos].voice;
+}
+
+std::string Script::getBGM(void) {
+	return script[pos].bgm;
 }
 
 std::string Script::getTag(void) {
