@@ -27,3 +27,10 @@ void Audio::stopSound(int channel) {
 	Mix_HaltChannel(channel);
 }
 
+bool Audio::isPlayingSound(int channel) {
+	if (Mix_Playing(channel)) {
+		return true;
+	} else {
+		return false;
+	}
+}

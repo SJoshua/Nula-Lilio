@@ -20,6 +20,8 @@ public:
 	void playSound(Mix_Chunk *chunk, int channel = -1);
 
 	void stopSound(int channel = -1);
+
+	bool isPlayingSound(int channel = -1);
 };
 
 #endif
