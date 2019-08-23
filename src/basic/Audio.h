@@ -13,17 +13,13 @@ class Audio {
 public:
 	Audio(void);
 
-	void PlayMusic(std::string filename);
+	void playMusic(Mix_Music*);
 
-	void PlayMusic(void);
+	void stopMusic(void);
 
-	void PlayChunk(std::string filename);
+	void playSound(Mix_Chunk*, int channel = -1);
 
-	void PlayChunk(std::string filename, int loop_count);
-
-	void StopMusic(void);
-
-	void StopMusic(int late);
+	void stopSound(int channel = -1);
 };
 
 #endif

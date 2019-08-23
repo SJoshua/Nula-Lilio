@@ -4,42 +4,26 @@ extern ResourceManager resources;
 
 Audio::Audio(void) {};
 
-void Audio::PlayMusic(std::string filename) {
+void Audio::playMusic(Mix_Music * mus) {
 	if ((Mix_PlayingMusic() == 1) | (Mix_PausedMusic() == 1)) {
 		Mix_HaltMusic();
-		Mix_PlayMusic(resources.music(filename), -1);
+		Mix_PlayMusic(mus, -1);
 	} else {
-		Mix_PlayMusic(resources.music(filename), -1);
+		Mix_PlayMusic(mus, -1);
 	}
 }
 
-void Audio::PlayMusic(void) {
-	if (Mix_PausedMusic() == 1) {
-		Mix_ResumeMusic();
-	}
-}
-
-void Audio::PlayChunk(std::string filename) {
-	Mix_PlayChannel(-1, resources.chunk(filename), 0);
-}
-
-void Audio::PlayChunk(std::string filename, int loop_count) {
-	Mix_PlayChannel(-1, resources.chunk(filename), loop_count - 1);
-}
-
-void Audio::StopMusic(void) {
+void Audio::stopMusic(void) {
 	if (Mix_PlayingMusic() == 1) {
 		Mix_HaltMusic();
 	}
 }
 
-void Audio::StopMusic(int late) {
-	if (Mix_PlayingMusic() == 1) {
-		for (int i = 128; i >= 0; i--) {
-			Mix_VolumeMusic(i);
-			//SDL_Delay(late);
-		}
-		Mix_HaltMusic();
-		Mix_VolumeMusic(128);
-	}
+void Audio::playSound(Mix_Chunk * sou, int channel) {
+	Mix_PlayChannel(channel, sou, 0);
 }
+
+void Audio::stopSound(int channel) {
+	Mix_HaltChannel(channel);
+}
+

@@ -29,7 +29,6 @@ Start::Start(void) {
 
 void Start::process(void) {
 	if (current == 0) {
-		bgm.StopMusic(20);
 		scenes.jump(new Dialogue);
 	} else if (current == 1) {
 		scenes.push(new Load);
