@@ -7,6 +7,8 @@ extern SDL_Renderer *renderer;
 extern SDL_Window *window;
 
 Dialogue::Dialogue(std::string filename, int pos) {
+	audio.stopMusic();
+	audio.stopSound();
 	script = Script(filename, pos);
 	processScript();
 	delta = Texture(WINDOW_WIDTH * 85 / 100, WINDOW_HEIGHT * 84 / 100,
@@ -238,7 +240,7 @@ void Dialogue::update(void) {
 	}
 	if (speed) {
 		if (tick % speed == 0) {
-			if (speed == 2 || (!audio.isPlayingSound() && (tick - lastTick) > (bgPos.size() - 1) * script.getBackgroundSpeed())) {
+			if (speed == 2 || (!audio.isPlayingSound() && (tick - lastTick) > (int) (bgPos.size() - 1) * script.getBackgroundSpeed())) {
 				processScript();
 			}
 		}

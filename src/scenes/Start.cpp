@@ -1,11 +1,14 @@
 #include "scenes/Start.h"
 
+extern Audio audio;
 extern SceneManager scenes;
 extern ResourceManager resources;
 extern SDL_Renderer *renderer;
 
 Start::Start(void) {
 	//bgm.PlayMusic("test.mp3");
+	audio.stopMusic();
+	audio.stopSound();
 
 	startBtn = Button(400, 380,
 		resources.text(" Game Start ", resources.font(DEFAULT_FONT, 40)),
