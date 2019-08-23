@@ -22,7 +22,7 @@
 class Dialogue: public Scene {
 private:
 	Script script;
-	bool showCharacter, showName, callback;
+	bool showCharacter, showName, callback = false;
 	/* current: active button id
 	 * 0: auto
 	 * 1: skip
