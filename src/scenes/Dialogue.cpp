@@ -238,7 +238,7 @@ void Dialogue::update(void) {
 	}
 	if (speed) {
 		if (tick % speed == 0) {
-			if (speed == 2 || !audio.isPlayingSound()) {
+			if (speed == 2 || (!audio.isPlayingSound() && (tick - lastTick) > (bgPos.size() - 1) * script.getBackgroundSpeed())) {
 				processScript();
 			}
 		}
@@ -247,7 +247,7 @@ void Dialogue::update(void) {
 		// speed: the number of ticks required for one step
 		int dur = tick - lastTick;
 		int spd = script.getBackgroundSpeed();
-		if (!spd) {
+		if (!spd) { 
 			spd = 30;
 		}
 		unsigned int step = dur / spd;
