@@ -125,8 +125,13 @@ void Dialogue::processScript(void) {
 		audio.playSound(resources.chunk(voice));
 	}
 	if (bgm != script.getBGM()) {
+		if (!bgm.empty()) {
+			audio.stopMusic();
+		}
 		bgm = script.getBGM();
-		audio.playMusic(resources.music(bgm));
+		if (!bgm.empty()) {
+			audio.playMusic(resources.music(bgm));
+		}
 	}
 }
 
@@ -233,7 +238,9 @@ void Dialogue::update(void) {
 	}
 	if (speed) {
 		if (tick % speed == 0) {
-			processScript();
+			if (speed == 2 || !audio.isPlayingSound()) {
+				processScript();
+			}
 		}
 	}
 	if (bgPos.size() > 1) {

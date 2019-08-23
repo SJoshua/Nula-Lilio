@@ -1,4 +1,4 @@
-﻿# Translation of ことのはアムリラート Prologue
+﻿# Transelectation of ことのはアムリラート Prologue
 # FOR TEST ONLY
 
 @bg[black]
@@ -698,7 +698,7 @@ $meet
 @vo[ruka/10.ogg]
 #[和訳 x=「Ｊｕｌｉａｍｏ(フミヅキアイ)を話せますか？」]
 
-@sl[{Cxu vi?$cxu_vi}{Parolas?$parolas}{Juliamo?$juliamo}]
+@select[{Cxu vi?$cxu_vi}{Parolas?$parolas}{Juliamo?$juliamo}]
 [露卡]	「Cxu vi parolas la lingvon "Juliamo"?」
 
 # 分歧点
@@ -759,7 +759,7 @@ $cxu_vi
 @vo[rin/60.ogg]
 [凛]	「……欸，奇怪？刚才，你是不是说了『Yes』？」
 
-@jp[$jes]
+@jump[$jes]
 
 $parolas
 
@@ -818,7 +818,7 @@ $parolas
 @vo[rin/63.ogg]
 [凛]	「啊！你刚才说了『Yes』！确实说了对吧！？『Yes』！」
 
-@jp[$jes]
+@jump[$jes]
 
 $juliamo
 
@@ -935,7 +935,7 @@ $jes
 
 @bg[black]
 @bgm[-]
-@sl[{好的！$meet}{不了，告辞。$end}]
+@select[{好的！$meet}{不了，告辞。$end}]
 [INFO]	Demo到此结束。
 	要回到遇到露卡的时候再玩一次吗？
 

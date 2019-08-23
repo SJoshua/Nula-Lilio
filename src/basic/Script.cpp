@@ -23,6 +23,9 @@ void Script::readScript(std::string filename) {
 				if (next.character == "-") {
 					next.character.clear();
 				}
+				if (next.bgm == "-") {
+					next.bgm.clear();
+				}
 				if (next.background == "-" || next.background.empty()) {
 					next.background = "black";
 				}
