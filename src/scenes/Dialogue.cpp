@@ -148,6 +148,7 @@ void Dialogue::onKeyDown(SDL_Keycode code) {
 	switch (code) {
 		case SDLK_RETURN:
 		case SDLK_SPACE:
+			speed = 0;
 			// audio.playSound("click.wav");
 			if (select.empty()) {
 				processScript();
